@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+<h:head>
+    <title>OCL2PSQL Test Bed</title>
+</h:head>
+<style type="text/css">
+    .ui-datatable-header {
+        height: 50px
+    }
+</style>
+<h:body>
+<h3 style="margin-top: 0">OCL2PSQL Test Bed</h3>
+    <h:form id="mainForm">  
+    <p:remoteCommand name="onResearcherCellEdit" update="mainForm:researchTable mainForm:resultLabel" />
+    <p:growl id="growl" life="2000" />
+    	<div class="ui-g-12">
+		  <div class="ui-g-4" style="float: left;">
+		  <p:inputTextarea id="inputQuery" rows="10" cols="50" autoResize="true" value="#{helloWorldBean.query}" />
+		  </div>
+		  <div class="ui-g-8" style="float: left;">
+		    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+		        <p:outputLabel for="console" value="Scenario:" />
+		        <p:selectOneRadio id="console" value="#{helloWorldBean.scenario}">
+		            <f:selectItem itemLabel="1" itemValue="1" />
+		            <f:selectItem itemLabel="2" itemValue="2" />
+		            <f:selectItem itemLabel="3" itemValue="3" />
+		            <f:selectItem itemLabel="4" itemValue="4" />
+		            <f:selectItem itemLabel="5" itemValue="5" />
+		            <f:selectItem itemLabel="6" itemValue="6" />
+		            <p:ajax event="change" update="researchTable paperTable writeTable reviewTable console" listener="#{helloWorldBean.changeScene}"/>
+		        </p:selectOneRadio>
+		    </h:panelGrid>
+		  <p:commandButton value="Execute" id="btn" update="resultLabel growl" process="@this inputQuery console"
+		    action="#{helloWorldBean.buttonAction}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+		    <br/>
+		    <br/>
+		    <p:outputLabel id="resultLabel" value="#{helloWorldBean.queryResult}" escape="false" />
+		    <div>
+		  <div class="ui-g-7" style="float: left;">
+			  	<p:dataTable rowKey="#{result.id}" id="researchTable" var="result" 
+			  	editable="true" editMode="cell" value="#{helloWorldBean.researchers}" styleClass="ui-g-12">
+				    <f:facet name="header">
+				        Researcher
+				        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+				        <p:columnToggler datasource="researchTable" trigger="toggler" />
+				    </f:facet>
+				    <p:ajax event="cellEdit" listener="#{helloWorldBean.onResearcherCellEdit}" oncomplete="onResearcherCellEdit()" />
+				    <p:column headerText="Id" width="5%">
+				        <h:outputText value="#{result.id}" />
+				    </p:column>
+				    <p:column headerText="Ref" width="40%">
+				        <h:outputText value="#{result.researchRef}" />
+				    </p:column>
+				    <p:column headerText="name" width="20%">
+				        <p:cellEditor>
+			                <f:facet name="output"><h:outputText value="#{result.name}" /></f:facet>
+			                <f:facet name="input"><p:inputText id="nameInput" value="#{result.name}" style="width:100%"/></f:facet>
+			            </p:cellEditor>
+				    </p:column>
+				    <p:column headerText="age" width="15%">
+				        <p:cellEditor>
+			                <f:facet name="output"><h:outputText value="#{result.age}" /></f:facet>
+			                <f:facet name="input"><p:inputText type="number" id="ageInput" value="#{result.age}" style="width:100%"/></f:facet>
+			            </p:cellEditor>
+				    </p:column>
+				    <p:column headerText="isStudent" width="10%">
+				        <p:cellEditor>
+			                <f:facet name="output"><h:outputText value="#{result.isStudent}" /></f:facet>
+			                <f:facet name="input"><p:inputText type="number" id="isStudentInput" value="#{result.isStudent}" style="width:100%"/></f:facet>
+			            </p:cellEditor>
+				    </p:column>
+				</p:dataTable>
+			  </div>
+			  <div class="ui-g-5" style="float: right;">
+			  	<p:dataTable styleClass="ui-g-12" id="writeTable" var="result" value="#{helloWorldBean.writes}">
+			  	<f:facet name="header">
+				        Writes
+				        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+				        <p:columnToggler datasource="writeTable" trigger="toggler" />
+				    </f:facet>
+				    <p:column headerText="author" width="50%">
+				        <h:outputText value="#{result.author}" />
+				    </p:column>
+				    <p:column headerText="manuscript" width="50%">
+				        <h:outputText value="#{result.manuscript}" />
+				    </p:column>
+				</p:dataTable>
+			  </div>
+			</div>
+			<div style="min-height: 20px; clear:both;"></div>
+			<div>
+			  <div class="ui-g-7" style="float: left;">
+			  	<p:dataTable id="paperTable" var="result" value="#{helloWorldBean.papers}" styleClass="ui-g-12">
+			  	<f:facet name="header">
+				        Paper
+				        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+				        <p:columnToggler datasource="paperTable" trigger="toggler" />
+				    </f:facet>
+				    <p:column headerText="Id" width="5%">
+				        <h:outputText value="#{result.id}" />
+				    </p:column>
+				    <p:column headerText="Ref" width="40%">
+				        <h:outputText value="#{result.paperRef}" />
+				    </p:column>
+				    <p:column headerText="title" width="20%">
+				        <h:outputText value="#{result.title}" />
+				    </p:column>
+				    <p:column headerText="wordCount" width="15%">
+				        <h:outputText value="#{result.wordCount}" />
+				    </p:column>
+				    <p:column headerText="studentPaper" width="10%">
+				        <h:outputText value="#{result.isStudentPaper}" />
+				    </p:column>
+				</p:dataTable>
+			  </div>
+			  <div class="ui-g-5" style="float: right;">
+			  	<p:dataTable id="reviewTable" var="result" value="#{helloWorldBean.reviews}" styleClass="ui-g-12">
+			  	<f:facet name="header">
+				        Review
+				        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+				        <p:columnToggler datasource="reviewTable" trigger="toggler" />
+				    </f:facet>
+				    <p:column headerText="referee" width="50%">
+				        <h:outputText value="#{result.referee}" />
+				    </p:column>
+				    <p:column headerText="submission" width="50%">
+				        <h:outputText value="#{result.submission}" />
+				    </p:column>
+				</p:dataTable>
+			  </div>
+			</div>
+		  </div>
+		</div>  
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+<h:head>
+    <title>OCL2PSQL Test Bed</title>
+</h:head>
+<h:body>
+<h3 style="margin-top: 0">OCL2PSQL Test Bed</h3>
+    <h:form id="mainForm">  
+    <p:remoteCommand name="onResearcherCellEdit" update="resultPanel" />
+    <p:growl id="growl" life="2000" />
+    	<div class="ui-g-4">
+		  <div class="ui-g-12" style="float: left;">
+		  <p:inputTextarea styleClass="ui-g-12" id="inputQuery" 
+		  rows="10" value="#{testBean.query}"/>
+		  </div>
+		 <p:outputPanel id="queryExpression" styleClass="ui-g-12">
+		  	<ol>
+		  		<li style="font-weight: #{testBean.queryNumber == 1 ? 'bold' : 'lighter'};">There exists at least 1 student researcher but no more than 5 student researchers is allowed.</li>
+				<li style="font-weight: #{testBean.queryNumber == 2 ? 'bold' : 'lighter'};">A paper cannot be more than 10000 words.</li>
+				<li style="font-weight: #{testBean.queryNumber == 3 ? 'bold' : 'lighter'};">Every paper must be reviewed.</li>
+				<li style="font-weight: #{testBean.queryNumber == 4 ? 'bold' : 'lighter'};">Students are not allowed to review papers.</li>
+				<li style="font-weight: #{testBean.queryNumber == 5 ? 'bold' : 'lighter'};">One of the authors of a student paper must be a student.</li>
+				<li style="font-weight: #{testBean.queryNumber == 6 ? 'bold' : 'lighter'};">There exists a reviewer who only reviews paper from the student.</li>
+				<li style="font-weight: #{testBean.queryNumber == 7 ? 'bold' : 'lighter'};">There exists researchers who published papers by the age of 18.</li>
+				<li style="font-weight: #{testBean.queryNumber == 8 ? 'bold' : 'lighter'};">A paper cannot be reviewed by one of its author.</li>
+		  	</ol>
+    	</p:outputPanel>
+    	</div>
+    	
+    	<p:outputPanel id="resultPanel" styleClass="ui-g-8">
+    		 <div class="ui-g-12" style="float: left;">
+			    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+			        <p:outputLabel for="scenario" value="Scenario:" />
+			        <p:selectOneRadio id="scenario" value="#{testBean.scenario}">
+			            <f:selectItem itemLabel="1" itemValue="1" />
+			            <f:selectItem itemLabel="2" itemValue="2" />
+			            <f:selectItem itemLabel="3" itemValue="3" />
+			            <f:selectItem itemLabel="4" itemValue="4" />
+			            <f:selectItem itemLabel="5" itemValue="5" />
+			            <f:selectItem itemLabel="6" itemValue="6" />
+			            <p:ajax event="change" update="scenario resultPanel" listener="#{testBean.changeScene}"/>
+			        </p:selectOneRadio>
+			    </h:panelGrid>
+		    	<p:commandButton value="Execute" id="executeBtn" update="resultPanel growl" process="@this inputQuery scenario"
+			    action="#{testBean.execute}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+			    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+			        <p:outputLabel for="queryNumber" value="Query: " />
+			        <p:selectOneRadio id="queryNumber" value="#{testBean.queryNumber}">
+			            <f:selectItem itemLabel="1" itemValue="1" />
+			            <f:selectItem itemLabel="2" itemValue="2" />
+			            <f:selectItem itemLabel="3" itemValue="3" />
+			            <f:selectItem itemLabel="4" itemValue="4" />
+			            <f:selectItem itemLabel="5" itemValue="5" />
+			            <f:selectItem itemLabel="6" itemValue="6" />
+			            <f:selectItem itemLabel="7" itemValue="7" />
+			            <f:selectItem itemLabel="8" itemValue="8" />
+			            <p:ajax event="change" update="queryNumber resultPanel queryExpression" listener="#{testBean.changeQueryNumber}"/>
+			        </p:selectOneRadio>
+			    </h:panelGrid>
+				<p:commandButton value="Validate" id="validateBtn" update="resultPanel growl" process="@this inputQuery scenario queryNumber"
+				    action="#{testBean.validate}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+				<p:commandButton value="OCL" id="sampleBtn" update="resultPanel growl" process="@this queryNumber"
+				    action="#{testBean.sampleOCL}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+				<p:commandButton value="Clear" id="clearBtn" update="resultPanel growl" process="@this" disabled="#{testBean.clearBtnDisabled}"
+				    action="#{testBean.clear}" style="margin-right:20px; float: right;" styleClass="ui-priority-primary" />
+	    	</div>
+	    	<div class="ui-g-12">
+	    		<p:repeat value="#{testBean.results}" var="data">
+    				<p:outputLabel styleClass="#{data.queryStyle}" id="queryLabel" value="#{data.query}"/>
+	    			<p:outputLabel rendered="#{!data.resultEmpty}" styleClass="ui-g-8" id="resultLabel" value="#{data.result}" escape="false" />
+	    			<br/>
+	    			<p:outputPanel rendered="#{!data.emptyHorizontalTab}"><hr/></p:outputPanel>
+	    		</p:repeat>
+	    	</div>
+    	</p:outputPanel>
+	</h:form>
+</h:body>
+</html>
