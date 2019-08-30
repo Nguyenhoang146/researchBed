@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+ 
+<h:head>
+    <title>Ocl2PSql</title>
+</h:head>
+<h:body>
+<h2 style="margin-top: 0">SSL to Procedural Language SQL (SSL2PLSQL)</h2>
+<p>
+This web service is intended for readers of our manuscripts:
+<ul>
+<li><b>Mapping OCL into SQL: Challenges and Opportunities Ahead</b></li>
+<li><b>OCL2PSQL: An OCL-to-SQL Code-Generator for Model-Driven Engineering</b></li>
+</ul>
+In particular, the <i>contextual model</i> of the OCL expressions to be translated
+is the model CarOwnership (<h:outputLink target="_blank" value="./model.html">See here</h:outputLink>).<br/>
+The generated SQL expressions are only intended for the database 
+schema CarDB (<h:outputLink target="_blank" value="./schema.html">See here</h:outputLink>).
+</p>
+<p>
+Please, be aware that OCL2PSQL is an on-going research project.<br/>
+In particular, OCL2PSQL does <b>not</b> cover yet the full OCL language.
+</p>
+<p>
+Moreover, for the time being, 
+OCL expressions should adjust to the following syntactical conventions:
+</p>
+<ul>
+	<li>Use single quotation marks for string-literals. E.g., <code>p.Person:name = 'string'</code>.</li>
+	<li><b>allInstances-expressions</b>. <code>&#60;class&#62;.allInstances()</code> should be written
+<code>&#60;class&#62;::allInstances()</code>. E.g., <code>Car::allInstances()</code>.</li>
+	<li><b>dot-expressions</b>. <code>&#60;var&#62;.&#60;attr&#62;</code> should be written
+<code>&#60;var&#62;.&#60;class&#62;:&#60;attr&#62;</code>, where <code>&#60;class&#62;</code> is the class of <code>&#60;attr&#62;</code>.
+E.g., <code>p.Person:name</code>.</li>
+	<li>Similarly, <code>&#60;var&#62;.&#60;assoc-end&#62;</code> should be written
+<code>&#60;var&#62;.&#60;class&#62;:&#60;assoc-end&#62;</code>, where <code>&#60;class&#62;</code> is the source-class of <code>&#60;assoc-end&#62;</code>.
+E.g., <code>c.Car:owners</code>.</li>
+</ul>
+    <h:form id="mainForm">  
+    	<div class="ui-g-12">
+    		<p:outputPanel styleClass="ui-g-10">
+    			<h:inputTextarea id="ocl" styleClass="ui-g-12" rows="2" value="#{helloWorldBean.ocl}"/>
+    		</p:outputPanel>
+    		<p:outputPanel styleClass="ui-g-2">
+    			<h:commandButton styleClass="ui-g-12" value="Translate" action="#{helloWorldBean.map}"/>
+    			<h:commandButton styleClass="ui-g-12" id="btnCopy" value="Copy" icon="fa fa-copy" />   
+    			<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy" target="sql"/>
+    		</p:outputPanel>
+		</div>
+		<div class="ui-g-12">
+			<p:outputPanel styleClass="ui-g-12">
+    			<h:inputTextarea id="sql" styleClass="ui-g-12" rows="25" readonly="true" value="#{helloWorldBean.sql}"/>
+    		</p:outputPanel>
+		</div>
+	</h:form>
+</h:body>
+</html>
