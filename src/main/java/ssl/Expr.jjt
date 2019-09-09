@@ -1,0 +1,205 @@
+options {
+   MULTI=true;
+   VISITOR=true;
+   NODE_DEFAULT_VOID=true;
+   VISITOR_DATA_TYPE = "String"; // (default "Object")
+   VISITOR_RETURN_TYPE = "String"; // (default "Object")
+   NODE_EXTENDS="BaseNode";
+   NODE_PREFIX="SSL";
+   IGNORE_CASE = true; // (default false)
+}
+
+PARSER_BEGIN(ExpressionParser)
+
+public class ExpressionParser {}
+
+PARSER_END(ExpressionParser)
+
+SKIP :
+{ 
+	"\t"
+	|"\n"
+	|"\r"
+}
+
+TOKEN : /* action */
+{
+	   < ADD: (" ")*"ADD" >
+	|  < DO: (" ")*"DO">
+	|  < UPDATE : (" ")*"UPDATE" >
+	|  < LINK : (" ")*"LINK" >
+	|  < QUANTIFIER: "EXACTLY" | "AT MOST" | "AT LEAST" >
+    |  < SUCH_THAT: "SUCH THAT">
+    |  < WHERE: (" ")+"WHERE" >
+	|  < AND: (" ")+"AND" >
+	|   < ALL: "*" >
+	| 	< EOC		: (" ")*";" >
+	| 	< ASSIGN	: (" ")*"="(" ")* >
+}
+
+TOKEN : //keywords
+{
+     < NUMBER : (<DIGIT>)+  >
+	|   < STRING: (< LETTER >)+ >
+	| 	< SPACES	: (< SPACE >)+ >
+}
+
+
+TOKEN :
+{
+	  < #DIGIT				: ["0"-"9"]>
+	| < #LETTER				: ["A"-"Z", "a"-"z", "'", "-"] >
+	| < #SPACE				: " " >
+	
+}
+
+SSLStart parse() #Start:{}
+{
+  (STATEMENT())+
+  { return jjtThis; }
+}
+
+void STATEMENT():
+{}
+{
+		ADD_EXPRESSION()
+	|   DO_EXPRESSION()
+	|	UPDATE_EXPRESSION()
+}
+
+void ADD_EXPRESSION() #AddStatement:
+{}
+{
+  < ADD > < SPACES > CLASS_NUM_PARAMETER() < EOC >
+}
+
+void DO_EXPRESSION() #DoStatement:
+{}
+{
+  < DO > < SPACES > DO_BODY() < EOC >
+}
+
+void UPDATE_EXPRESSION() #UpdateStatement:
+{}
+{
+  < UPDATE > < SPACES > UPDATE_BODY() < EOC >
+}
+
+void CLASS_NUM_PARAMETER() :
+{}
+{
+	NUMBER_QUANTITY() < SPACES > CLASS_NAME()
+}
+
+void CLASS_ALL_PARAMETER() :
+{}
+{
+	ALL_QUANTITY() < SPACES > CLASS_NAME()
+}
+
+void DO_BODY():
+{}
+{
+	QUANTIFIER_ENUM() < SPACES > DO_PARAMETER()
+}
+
+void QUANTIFIER_ENUM():
+{}
+{
+	<QUANTIFIER>
+	{ 
+		jjtThis.data.put("value",token.image);
+	}#Quantifier
+}
+
+void DO_PARAMETER():
+{}
+{
+	CLASS_NUM_PARAMETER() < SPACES > DO_ASSIGNMENT()
+}
+
+
+
+void NUMBER_QUANTITY() :
+{}
+{
+	<NUMBER>
+	{ 
+		jjtThis.data.put("value",token.image);
+	}#Number
+}
+
+void ALL_QUANTITY() :
+{}
+{
+	<ALL>
+	{ 
+		jjtThis.data.put("value",token.image);
+	}#All
+}
+
+void CLASS_NAME() :
+{}
+{
+	<STRING>
+	{ 
+		jjtThis.data.put("value",token.image);
+	}#Class
+}
+
+void DO_ASSIGNMENT():
+{}
+{
+	< SUCH_THAT > < SPACES > ASSIGNMENTS()
+}
+
+void ASSIGNMENTS() #Assignments:
+{}
+{
+	ASSIGNMENT() (< AND > < SPACES > ASSIGNMENT())*
+}
+
+void ASSIGNMENT() #Assignment:
+{}
+{
+	PROPERTY() < ASSIGN > VALUE()
+	
+}
+
+void PROPERTY() :
+{}
+{
+	<STRING>
+	{ 
+		jjtThis.data.put("value",token.image);
+	}#Property
+}
+
+void VALUE() :
+{}
+{
+	<STRING>
+	{ 
+		jjtThis.data.put("value",token.image);
+	}#Value
+}
+
+void UPDATE_BODY():
+{}
+{
+  	CLASS_PARAMETER() < SPACES > ASSIGNMENTS() (UPDATE_CONDITION())?
+}
+
+void CLASS_PARAMETER():
+{}
+{
+  	CLASS_NUM_PARAMETER()
+  	| CLASS_ALL_PARAMETER()
+}
+
+
+void UPDATE_CONDITION():
+{}
+{
+  	< WHERE > < SPACES > ASSIGNMENTS()
+}
