@@ -1,0 +1,17 @@
+.help-tip{
+    top: 18px;
+    right: 18px;
+    text-align: center;
+    background-color: #BCDBEA;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 26px;
+    cursor: default;
+    font-weight: bold;
+}
+
+.ui-chkbox-label {
+	margin-right: 0px !important;
+}
