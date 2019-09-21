@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+ 
+<h:head>
+    <title>CS-SE tools</title>
+</h:head>
+<h:body>
+<h1>
+List of CS-SE tools
+<h:outputLink style="font-weight: normal; font-size: 18px; float: right;"
+value="../index.html">
+Back
+</h:outputLink>
+</h1>
+<hr/>
+<p:outputPanel styleClass="ui-g-12">
+	<table class="ui-g-12">
+    <tr class="ui-g-12">
+      <td class="ui-g-6">
+        <h:outputLink target="_blank" value="./ocl2psql/index.html">
+			<img src="../img/ocl2psql.png" width="100%" style="border:1px solid black"/>
+        </h:outputLink>
+      </td>
+      <td class="ui-g-6">
+        <div><h:outputLink style="font-size: 32px;" value="./ocl2psql/index.html">OCL2PSQL</h:outputLink></div>
+        <div style="float: center;">The Object Constraint Language (OCL) is a textual, 
+        declarative language typically used as part of the UML 
+        standard for specifying constraints and queries on models.
+		OCL2PSQL implements a novel mapping from OCL to pure SQL that 
+		deals with (possibly nested) iterator expressions, 
+		without resorting to imperative features of SQL.
+		OCL2PSQL generates SQL queries that can be efficiently executed 
+		on mid- and large-size SQL databases.</div>
+      </td>
+    </tr>
+    <tr class="ui-g-12">
+      <td class="ui-g-6">
+        <h:outputLink value="./ssl2plsql/index.html">
+			<img src="../img/ssl2plsql.png" width="100%" style="border:1px solid black"/>
+        </h:outputLink>
+      </td>
+      <td class="ui-g-6">
+        <div><h:outputLink style="font-size: 32px;" value="./ssl2plsql/index.html">SSL2PLSQL</h:outputLink></div>
+        <div style="float: center;">Structured Scenario Language (SSL) is a well-defined language 
+        for describing specific scenarios for testing data constraints 
+        in a precise way. It is a scripting language inspired by 
+        the Object Constraint Language (OCL). The SSL2PLSQL implements
+        a mapping from SSL to SQL in Procedural Language 
+        (contains loops, functions, etc.). The SSL2PLSQL produces data scenario script
+        that can be executed on MySQL RDBMS.</div>
+      </td>
+    </tr>
+  </table>
+</p:outputPanel>
+</h:body>
+</html>
