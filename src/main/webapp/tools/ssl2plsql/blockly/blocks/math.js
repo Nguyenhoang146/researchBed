@@ -53,7 +53,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
       "value": 0
     }],
     "output": "Number",
-    "colour": "RED",
+    "colour": "0",
     "helpUrl": "%{BKY_MATH_NUMBER_HELPURL}",
     // "style": "math_blocks",
     "tooltip": "%{BKY_MATH_NUMBER_TOOLTIP}",
@@ -69,10 +69,25 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
       "name": "INPUT"
     }],
     "output": "String",
-    "colour": "RED",
+    "colour": "0",
     "helpUrl": "A class name.",
     "tooltip": "A class name.",
     "extensions": ["dynamic_class_extension"]
+  },
+
+  // Block for numeric value.
+  {
+    "type": "assoc_string",
+    "message0": "%1",
+    "args0": [{
+      "type": "input_dummy",
+      "name": "INPUT"
+    }],
+    "output": "String",
+    "colour": "0",
+    "helpUrl": "An association class name.",
+    "tooltip": "An association class name.",
+    "extensions": ["dynamic_assoc_extension"]
   },
 
   // Block for numeric value.
@@ -84,7 +99,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
       "name": "INPUT"
     }],
     "output": "String",
-    "colour": "RED",
+    "colour": "0",
     "helpUrl": "An attribute definition.",
     "tooltip": "An attribute definition.",
     "extensions": ["dynamic_attribute_extension"]
@@ -157,8 +172,11 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
   // Block for action do
   {
     "type": "action_do",
-    "message0": "DO %1 %2 %3 SUCH THAT %4",
+    "message0": "DO %1 %2 (n) %3 (c) %4 SUCH THAT (cond.) %5",
     "args0": [
+      {
+        "type": "input_dummy"
+      },
       {
         "type": "field_dropdown",
         "name": "OP",
@@ -185,46 +203,30 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
       }
     ],
     "output": "Do_statement",
-    "colour": "BLUE",
+    "colour": "195",
     "helpUrl": "%{BKY_MATH_SINGLE_HELPURL}",
     "extensions": ["math_op_tooltip"]
   },
-
-
-  // Block for action update
   {
-    "type": "action_update",
-    "message0": "UPDATE %1 %2 %3",
-    "args0": [
-      {
-        "type": "input_value",
-        "name": "N",
-        "check": "Number"
-      },
-      {
-        "type": "input_value",
-        "name": "C",
-        "check": "String"
-      },
-      {
-        "type": "input_value",
-        "name": "LOGIC",
-        "check": "Boolean"
-      }
-    ],
-    "output": "Update_statement",
-    "colour": "BLUE",
-    "helpUrl": "%{BKY_MATH_SINGLE_HELPURL}"
+    "type": "forall",
+    "message0": "*",
+    "output": "String",
+    "colour": "0",
+    "tooltip": "FORALL",
+    "helpUrl": "FORALL"
   },
   // Block for action update
   {
-    "type": "action_update_where",
-    "message0": "UPDATE %1 %2 %3 WHERE %4",
+    "type": "action_update",
+    "message0": "UPDATE %1 (n) %2 (c) %3 (asgmt.) %4 %5 WHERE (cond.) %6",
     "args0": [
+      {
+        "type": "input_dummy"
+      },
       {
         "type": "input_value",
         "name": "N",
-        "check": "Number"
+        "check": ["Number", "String"]
       },
       {
         "type": "input_value",
@@ -235,6 +237,11 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
         "type": "input_value",
         "name": "LOGIC",
         "check": "Boolean"
+      },
+      {
+        "type": "field_checkbox",
+        "name": "isIncluded",
+        "checked": true
       },
       {
         "type": "input_value",
@@ -242,9 +249,9 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
         "check": "Boolean"
       }
     ],
-    "output": "Update_statement_where",
-    "colour": "BLUE",
-    "helpUrl": "%{BKY_MATH_SINGLE_HELPURL}"
+    "output": "String",
+    "colour": "195",
+    "helpUrl": "UPDATE Statement"
   },
   // Block for trigonometry operators.
   {
@@ -523,8 +530,11 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
   //Action add
   {
     "type": "action_add",
-    "message0": "ADD %1 %2",
+    "message0": "ADD %1 (n) %2 (c) %3",
     "args0": [
+      {
+        "type": "input_dummy"
+      },
       {
         "type": "input_value",
         "name": "N",
@@ -536,9 +546,9 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
         "check": "String"
       }
     ],
-    "inputsInline": true,
+    "inputsInline": false,
     "output": "Add_statement",
-    "colour": "BLUE",
+    "colour": "195",
     "tooltip": "Add <n> instances to Class <c>",
     "helpUrl": "Add <n> instances to Class <c>"
   }
@@ -757,4 +767,21 @@ Blockly.Extensions.registerMutator('math_modes_of_list_mutator',
             }
             return options;
           }), 'ATTR');
+  });
+
+  Blockly.Extensions.register('dynamic_assoc_extension',
+    function() {
+      this.getInput('INPUT')
+        .appendField(new Blockly.FieldDropdown(
+          function() {
+            var models = JSON.parse(document.getElementById('unique-form:data-model').value);
+            var options = [];
+            for(var i = 0; i < models.length; i++) {
+              if(models[i].hasOwnProperty('association')) {
+                var val = models[i].association;
+                options.push([val, val]);
+              }
+            }
+            return options;
+          }), 'CLASS');
   });

@@ -5,32 +5,36 @@ public interface ExpressionParserTreeConstants
   public int JJTSTART = 0;
   public int JJTVOID = 1;
   public int JJTADDSTATEMENT = 2;
-  public int JJTDOSTATEMENT = 3;
-  public int JJTUPDATESTATEMENT = 4;
-  public int JJTQUANTIFIER = 5;
-  public int JJTNUMBER = 6;
-  public int JJTALL = 7;
-  public int JJTCLASS = 8;
-  public int JJTASSIGNMENTS = 9;
-  public int JJTASSIGNMENT = 10;
-  public int JJTPROPERTY = 11;
-  public int JJTVALUE = 12;
+  public int JJTNUMBER = 3;
+  public int JJTDOSTATEMENT = 4;
+  public int JJTASSIGNMENT = 5;
+  public int JJTPROPERTY = 6;
+  public int JJTVALUE = 7;
+  public int JJTUPDATESTATEMENT = 8;
+  public int JJTLINKSTATEMENT = 9;
+  public int JJTQUANTIFIER = 10;
+  public int JJTALL = 11;
+  public int JJTCLASS = 12;
+  public int JJTWHERECONDITION = 13;
+  public int JJTOCLEXP = 14;
 
 
   public String[] jjtNodeName = {
     "Start",
     "void",
     "AddStatement",
-    "DoStatement",
-    "UpdateStatement",
-    "Quantifier",
     "Number",
-    "All",
-    "Class",
-    "Assignments",
+    "DoStatement",
     "Assignment",
     "Property",
     "Value",
+    "UpdateStatement",
+    "LinkStatement",
+    "Quantifier",
+    "All",
+    "Class",
+    "WhereCondition",
+    "OclExp",
   };
 }
-/* JavaCC - OriginalChecksum=b6929064441a4df9005e91c4ab99b81d (do not edit this line) */
+/* JavaCC - OriginalChecksum=c94f37814dfd728fa2e3b234baad215e (do not edit this line) */

@@ -883,7 +883,7 @@ Blockly.Blocks['list_statements'] = {
     this.setOutput(true, 'Array');
     this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
     this.setTooltip('List of SSL statements');
-    this.setColour(30);
+    this.setColour(0);
   },
   /**
    * Create XML to represent list inputs.

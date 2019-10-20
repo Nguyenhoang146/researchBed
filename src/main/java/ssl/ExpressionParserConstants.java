@@ -22,27 +22,33 @@ public interface ExpressionParserConstants {
   /** RegularExpression Id. */
   int SUCH_THAT = 9;
   /** RegularExpression Id. */
-  int WHERE = 10;
+  int WITH = 10;
   /** RegularExpression Id. */
-  int AND = 11;
+  int USING = 11;
   /** RegularExpression Id. */
-  int ALL = 12;
+  int WHERE = 12;
   /** RegularExpression Id. */
-  int EOC = 13;
+  int AND = 13;
   /** RegularExpression Id. */
-  int ASSIGN = 14;
+  int ALL = 14;
   /** RegularExpression Id. */
-  int NUMBER = 15;
+  int EOC = 15;
   /** RegularExpression Id. */
-  int STRING = 16;
+  int ASSIGN = 16;
   /** RegularExpression Id. */
-  int SPACES = 17;
+  int IN = 17;
   /** RegularExpression Id. */
-  int DIGIT = 18;
+  int NUMBER = 18;
   /** RegularExpression Id. */
-  int LETTER = 19;
+  int STRING = 19;
   /** RegularExpression Id. */
-  int SPACE = 20;
+  int WS = 20;
+  /** RegularExpression Id. */
+  int DIGIT = 21;
+  /** RegularExpression Id. */
+  int LETTER = 22;
+  /** RegularExpression Id. */
+  int SPACE = 23;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -53,20 +59,23 @@ public interface ExpressionParserConstants {
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
-    "<ADD>",
-    "<DO>",
-    "<UPDATE>",
-    "<LINK>",
+    "\"ADD\"",
+    "\"DO\"",
+    "\"UPDATE\"",
+    "\"LINK\"",
     "<QUANTIFIER>",
     "\"SUCH THAT\"",
-    "<WHERE>",
-    "<AND>",
+    "\"@@WITH\"",
+    "\"@@USING\"",
+    "\"WHERE\"",
+    "\"AND\"",
     "\"*\"",
-    "<EOC>",
-    "<ASSIGN>",
+    "\";\"",
+    "\"=\"",
+    "\"IN\"",
     "<NUMBER>",
     "<STRING>",
-    "<SPACES>",
+    "<WS>",
     "<DIGIT>",
     "<LETTER>",
     "\" \"",

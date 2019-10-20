@@ -47,6 +47,8 @@ public class tryfortest {
         inputText.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 String sentence = inputText.getText();
+                sentence = sentence.replaceAll(" USING", "@@USING");
+                sentence = sentence.replaceAll(" WITH", "@@WITH");
                 // Put parens around sentence so that parser knows scope
                 // sentence = "(" + sentence + ")";
                 InputStream is = new ByteArrayInputStream(sentence.getBytes());

@@ -38,6 +38,66 @@ goog.require('Blockly');
 Blockly.Constants.Text.HUE = 160;
 
 Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
+  {
+    "type": "action_link",
+    "message0": "LINK %1 (n) %2 (c) %3 %4 WHERE (cond.) %5 WITH %6 (n') %7 (c') %8 %9 WHERE (cond.) %10 USE (assoc.) %11",
+    "args0": [
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_value",
+        "name": "n1",
+        "check": ["Number", "String"]
+      },
+      {
+        "type": "input_value",
+        "name": "c1",
+        "check": "String"
+      },
+      {
+        "type": "field_checkbox",
+        "name": "isIncluded1",
+        "checked": true
+      },
+      {
+        "type": "input_value",
+        "name": "condition1",
+      },
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_value",
+        "name": "n2",
+        "check": ["Number", "String"]
+      },
+      {
+        "type": "input_value",
+        "name": "c2",
+        "check": "String"
+      },
+      {
+        "type": "field_checkbox",
+        "name": "isIncluded2",
+        "checked": true
+      },
+      {
+        "type": "input_value",
+        "name": "condition2",
+      },
+      {
+        "type": "input_value",
+        "name": "assoc",
+        "check": "String"
+      }
+    ],
+    "inputsInline": false,
+    "output": "String",
+    "colour": "195",
+    "tooltip": "LINK  statement",
+    "helpUrl": "LINK  statement"
+  },
   // Block for text value
   {
     "type": "text",
@@ -49,7 +109,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
     }],
     "output": "String",
     // "style": "text_blocks",
-    "colour": "RED",
+    "colour": "0",
     "helpUrl": "%{BKY_TEXT_TEXT_HELPURL}",
     "tooltip": "%{BKY_TEXT_TEXT_TOOLTIP}",
     "extensions": [
@@ -151,9 +211,9 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
     ],
     "inputsInline": true,
     "output": null,
-    "colour": "RED",
-    "tooltip": "OCL Constraints Expression",
-    "helpUrl": "OCL Constraints Expression"
+    "colour": "0",
+    "tooltip": "OCL Expression",
+    "helpUrl": "OCL Expression"
   },
   {
     "type": "text_indexOf",

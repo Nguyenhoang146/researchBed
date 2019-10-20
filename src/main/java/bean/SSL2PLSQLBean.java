@@ -25,12 +25,19 @@ public class SSL2PLSQLBean {
                     .getCurrentInstance()
                     .getExternalContext()
                     .getRequestParameterMap().get("unique-form:hidden-result");
+            String dataModel = FacesContext
+                    .getCurrentInstance()
+                    .getExternalContext()
+                    .getRequestParameterMap().get("unique-form:data-model");
+            language = language.replaceAll(" USING", "@@USING");
+            language = language.replaceAll(" WITH", "@@WITH");
             InputStream is = new ByteArrayInputStream(language.getBytes());
             if(parser == null) parser = new ExpressionParser(is);
             else ExpressionParser.ReInit(is);
             SSLStart start = null;
             start = ExpressionParser.parse();
             SQLVisitor visitor = new SQLVisitor(language.split(";"));
+            visitor.setJsonContext(dataModel);
             String result = visitor.visit(start, "");
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();  
             response.setHeader("Content-Disposition", "attachment;filename=file.sql");  

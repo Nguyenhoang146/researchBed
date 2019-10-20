@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+<meta charset="UTF-8"/> 
+<title>JSON Editor For Security Model</title>
+<link rel="stylesheet" href="./styles.css" />
+<script src="./src/ace.js"></script>
+<script src="./src/ext-language_tools.js"></script>
+</h:head>
+
+<h:body>
+<input type="file" id="fileElem" style="display:none" 
+accept=".json" onchange="ace.handleFiles(this.files)"/>
+<a id="jsonDownloader" style="display:none" download="security_model.json"></a>
+<div id="editor" onclick="ace.importDataModel()" onkeypress="ace.importDataModel()"></div>
+<script src="./src/editor.js"></script>
+</h:body>
+</html>

@@ -433,6 +433,12 @@ Blockly.JavaScript['class_string'] = function(block) {
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
+Blockly.JavaScript['assoc_string'] = function(block) {
+  // Numeric value.
+  var code = block.getFieldValue('CLASS');
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
 Blockly.JavaScript['action_add'] = function(block) {
   // Arctangent of point (X, Y) in degrees from -180 to 180.
   var argument0 = Blockly.JavaScript.valueToCode(block, 'N',
@@ -476,21 +482,23 @@ Blockly.JavaScript['action_update'] = function(block) {
   var argument1 = Blockly.JavaScript.valueToCode(block, 'C',
       Blockly.JavaScript.ORDER_COMMA) || '<classname>';
   var argument2 = Blockly.JavaScript.valueToCode(block, 'LOGIC',
-      Blockly.JavaScript.ORDER_COMMA) || '<assignment>';    
-  var code = 'UPDATE ' + argument0 + ' ' + argument1 + ' ' + argument2;
+      Blockly.JavaScript.ORDER_COMMA) || '<assignment>'; 
+  var checkbox_isincluded = block.getFieldValue('isIncluded') == 'TRUE';
+  var argument3;
+  if(checkbox_isincluded) {
+    argument3 = Blockly.JavaScript.valueToCode(block, 'WHERE',
+    Blockly.JavaScript.ORDER_COMMA) || '<where-condition>';
+    argument3 = ' WHERE ' + argument3;
+  } else {
+    argument3 = '';
+  }
+  var code = 'UPDATE ' + argument0 + ' ' + argument1 + ' ' + argument2 + argument3;
   return [code, Blockly.JavaScript.ORDER_DIVISION];
 };
 
-Blockly.JavaScript['action_update_where'] = function(block) {
-  // Math operators with single operand.
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'N',
-      Blockly.JavaScript.ORDER_COMMA) || '<number>';
-  var argument1 = Blockly.JavaScript.valueToCode(block, 'C',
-      Blockly.JavaScript.ORDER_COMMA) || '<classname>';
-  var argument2 = Blockly.JavaScript.valueToCode(block, 'LOGIC',
-      Blockly.JavaScript.ORDER_COMMA) || '<assignment>';    
-  var argument3 = Blockly.JavaScript.valueToCode(block, 'WHERE',
-      Blockly.JavaScript.ORDER_COMMA) || '<where-condition>';   
-  var code = 'UPDATE ' + argument0 + ' ' + argument1 + ' ' + argument2 + ' WHERE ' + argument3;
-  return [code, Blockly.JavaScript.ORDER_DIVISION];
+Blockly.JavaScript['forall'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '*';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

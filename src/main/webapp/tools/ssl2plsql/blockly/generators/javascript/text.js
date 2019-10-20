@@ -108,9 +108,36 @@ Blockly.JavaScript['text_isEmpty'] = function(block) {
 };
 
 Blockly.JavaScript['ocl_text'] = function(block) {
-  var text_exp = block.getFieldValue('exp');
+  var text_exp = block.getFieldValue('exp').replace(/\s/g,'');
   // TODO: Change ORDER_NONE to the correct strength.
-  return [text_exp, Blockly.JavaScript.ORDER_ATOMIC];
+  return ['IN ' + text_exp, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['action_link'] = function(block) {
+  var value_n1 = Blockly.JavaScript.valueToCode(block, 'n1', Blockly.JavaScript.ORDER_ATOMIC) || '<n>';
+  var value_c1 = Blockly.JavaScript.valueToCode(block, 'c1', Blockly.JavaScript.ORDER_ATOMIC) || '<c>';
+  var checkbox_isincluded1 = block.getFieldValue('isIncluded1') == 'TRUE';
+  var value_condition1;
+  if(checkbox_isincluded1) {
+    value_condition1 = Blockly.JavaScript.valueToCode(block, 'condition1', Blockly.JavaScript.ORDER_NONE) || '<cond.>';
+    value_condition1 = ' WHERE ' + value_condition1;
+  } else {
+    value_condition1 = '';
+  }
+  var value_n2 = Blockly.JavaScript.valueToCode(block, 'n2', Blockly.JavaScript.ORDER_ATOMIC) || '<n\'>';
+  var value_c2 = Blockly.JavaScript.valueToCode(block, 'c2', Blockly.JavaScript.ORDER_ATOMIC) || '<c\'>';
+  var checkbox_isincluded2 = block.getFieldValue('isIncluded2') == 'TRUE';
+  var value_condition2;
+  if(checkbox_isincluded2) {
+    value_condition2 = Blockly.JavaScript.valueToCode(block, 'condition2', Blockly.JavaScript.ORDER_ATOMIC) || '<cond\'.>';
+    value_condition2 = ' WHERE ' + value_condition2;
+  } else {
+    value_condition2 = '';
+  }
+  var value_assoc = Blockly.JavaScript.valueToCode(block, 'assoc', Blockly.JavaScript.ORDER_ATOMIC) || '<assoc.>';
+  var code = 'LINK ' + value_n1 + ' ' + value_c1 + value_condition1 + ' WITH ' + value_n2 + ' ' + value_c2 + value_condition2 + ' USING ' + value_assoc;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['text_indexOf'] = function(block) {

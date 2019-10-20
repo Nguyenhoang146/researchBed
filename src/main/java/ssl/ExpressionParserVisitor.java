@@ -5,15 +5,17 @@ public interface ExpressionParserVisitor
   public String visit(SimpleNode node, String data);
   public String visit(SSLStart node, String data);
   public String visit(SSLAddStatement node, String data);
-  public String visit(SSLDoStatement node, String data);
-  public String visit(SSLUpdateStatement node, String data);
-  public String visit(SSLQuantifier node, String data);
   public String visit(SSLNumber node, String data);
-  public String visit(SSLAll node, String data);
-  public String visit(SSLClass node, String data);
-  public String visit(SSLAssignments node, String data);
+  public String visit(SSLDoStatement node, String data);
   public String visit(SSLAssignment node, String data);
   public String visit(SSLProperty node, String data);
   public String visit(SSLValue node, String data);
+  public String visit(SSLUpdateStatement node, String data);
+  public String visit(SSLLinkStatement node, String data);
+  public String visit(SSLQuantifier node, String data);
+  public String visit(SSLAll node, String data);
+  public String visit(SSLClass node, String data);
+  public String visit(SSLWhereCondition node, String data);
+  public String visit(SSLOclExp node, String data);
 }
-/* JavaCC - OriginalChecksum=c1f40e3298b91153e68783cdd4ee1ecd (do not edit this line) */
+/* JavaCC - OriginalChecksum=e93c76f3b462326fb9cba328b6bdb09b (do not edit this line) */
