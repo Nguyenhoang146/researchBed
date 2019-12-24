@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+ 
+<h:head>
+    <title>Ocl2PSql</title>
+</h:head>
+<h:body>
+<h2 style="margin-top: 0">OCL to Pure SQL (OCL2PSQL)</h2>
+<h3 style="margin: 0">Car-Ownership model</h3>
+<p:outputPanel styleClass="ui-g-12">
+<p:outputPanel styleClass="ui-g-6">
+<pre>
+<code>
+[
+    {
+        "class": "Car",
+        "attributes": [
+            {
+                "name": "color",
+                "type": "String"
+            }
+        ],
+        "ends": [
+            {
+                "name": "owners",
+                "target": "Person",
+                "opp": "ownedCars",
+                "mult": "*"
+            }
+        ]
+    },
+    {
+        "class": "Person",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "String"
+            }
+        ],
+        "ends": [
+            {
+                "name": "ownedCars",
+                "target": "Car",
+                "opp": "owners",
+                "mult": "*"
+            }
+        ]
+    }
+]
+</code>
+</pre>
+</p:outputPanel>
+<p:outputPanel styleClass="ui-g-6">
+<img src="img/ocl19.png"/>
+</p:outputPanel>
+</p:outputPanel>
+</h:body>
+</html>
