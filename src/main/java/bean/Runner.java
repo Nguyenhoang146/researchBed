@@ -1,24 +1,53 @@
 package bean;
 
-import org.json.simple.parser.ParseException;
-import org.vgu.ocl2psql.main.OCL2PSQL;
-import org.vgu.ocl2psql.ocl.exception.OclParseException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.vgu.ocl2psql.main.OCL2PSQL_2;
 
 public class Runner {
-    public String run(String ocl, boolean descriptionMode) throws OclParseException, ParseException {
-        OCL2PSQL ocl2psql = new OCL2PSQL();
-        ocl2psql.setPlainUMLContext("[\r\n" + 
-                "{\"class\" : \"Car\",\r\n" + 
-                " \"attributes\" : [{\"name\" : \"color\", \"type\" : \"String\"}]\r\n" + 
-                "},\r\n" + 
-                "{\"class\" : \"Person\",\r\n" + 
-                " \"attributes\" : [{\"name\" : \"name\", \"type\" : \"String\"}]\r\n" + 
-                " },\r\n" + 
-                "{\"association\" : \"Ownership\",\r\n" + 
-                " \"ends\" : [\"owners\", \"ownedCars\"],\r\n" + 
-                " \"classes\" : [\"Car\", \"Person\"]\r\n" + 
-                "}\r\n" + 
-                "]");
+    public String run(String ocl, boolean descriptionMode) throws FileNotFoundException, IOException, Exception {
+        OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+        final String text = "[\r\n" + 
+            "    {\r\n" + 
+            "        \"class\": \"Car\",\r\n" + 
+            "        \"attributes\": [\r\n" + 
+            "            {\r\n" + 
+            "                \"name\": \"color\",\r\n" + 
+            "                \"type\": \"String\"\r\n" + 
+            "            }\r\n" + 
+            "        ],\r\n" + 
+            "        \"ends\": [\r\n" + 
+            "            {\r\n" + 
+            "                \"name\": \"owners\",\r\n" + 
+            "                \"target\": \"Person\",\r\n" + 
+            "                \"opp\": \"ownedCars\",\r\n" + 
+            "                \"mult\": \"*\"\r\n" + 
+            "            }\r\n" + 
+            "        ]\r\n" + 
+            "    },\r\n" + 
+            "    {\r\n" + 
+            "        \"class\": \"Person\",\r\n" + 
+            "        \"attributes\": [\r\n" + 
+            "            {\r\n" + 
+            "                \"name\": \"name\",\r\n" + 
+            "                \"type\": \"String\"\r\n" + 
+            "            }\r\n" + 
+            "        ],\r\n" + 
+            "        \"ends\": [\r\n" + 
+            "            {\r\n" + 
+            "                \"name\": \"ownedCars\",\r\n" + 
+            "                \"target\": \"Car\",\r\n" + 
+            "                \"opp\": \"owners\",\r\n" + 
+            "                \"mult\": \"*\"\r\n" + 
+            "            }\r\n" + 
+            "        ]\r\n" + 
+            "    }\r\n" + 
+            "]";
+        JSONArray json = (JSONArray) new JSONParser().parse(text);
+        ocl2psql.setDataModelFromFile(json);
         ocl2psql.setDescriptionMode(descriptionMode);
         return ocl2psql.mapToString(ocl);
     }

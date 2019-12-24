@@ -4,6 +4,9 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/dm2schema/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/jocl/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/OCL2PSQL/src/main/java"/>
         <property name="java-output-path" value="/researchBed/target/classes"/>
         <property name="context-root" value="se"/>
     </wb-module>

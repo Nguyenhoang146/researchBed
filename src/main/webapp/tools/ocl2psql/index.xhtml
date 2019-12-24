@@ -40,21 +40,6 @@ schema CarDB (<h:outputLink target="_blank" value="./schema.html">See here</h:ou
 Please, be aware that OCL2PSQL is an on-going research project. <br/>
 In particular, OCL2PSQL does <b>not</b> cover yet the full OCL language.
 </p>
-<p>
-Moreover, for the time being, 
-OCL expressions should adjust to the following syntactical conventions:
-</p>
-<ul>
-	<li>Use single quotation marks for string-literals. E.g., <code>p.Person:name = 'string'</code>.</li>
-	<li><b>allInstances-expressions</b>. <code>&#60;class&#62;.allInstances()</code> should be written
-<code>&#60;class&#62;::allInstances()</code>. E.g., <code>Car::allInstances()</code>.</li>
-	<li><b>dot-expressions</b>. <code>&#60;var&#62;.&#60;attr&#62;</code> should be written
-<code>&#60;var&#62;.&#60;class&#62;:&#60;attr&#62;</code>, where <code>&#60;class&#62;</code> is the class of <code>&#60;attr&#62;</code>.
-E.g., <code>p.Person:name</code>.</li>
-	<li>Similarly, <code>&#60;var&#62;.&#60;assoc-end&#62;</code> should be written
-<code>&#60;var&#62;.&#60;class&#62;:&#60;assoc-end&#62;</code>, where <code>&#60;class&#62;</code> is the source-class of <code>&#60;assoc-end&#62;</code>.
-E.g., <code>c.Car:owners</code>.</li>
-</ul>
     <h:form id="mainForm">  
     	<div class="ui-g-12">
     		<p:outputPanel styleClass="ui-g-9">
