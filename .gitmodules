@@ -1,9 +1,3 @@
 [submodule "OCL2PSQL"]
 	path = OCL2PSQL
 	url = https://github.com/ocl-vgu/OCL2PSQL
-[submodule "dm2schema"]
-	path = dm2schema
-	url = https://github.com/ocl-vgu/dm2schema
-[submodule "jocl"]
-	path = jocl
-	url = https://github.com/ocl-vgu/jocl
