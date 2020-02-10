@@ -74,6 +74,6 @@
 		
     </dependencies>
   <build>
-    <finalName>researchBed</finalName>
+    <finalName>/</finalName>
   </build>
 </project>
