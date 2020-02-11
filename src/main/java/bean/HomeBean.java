@@ -28,7 +28,7 @@ public class HomeBean implements Serializable{
 		descriptionMode = false;
 	}
 	
-	public void map() {
+	public String map() {
 	    try {
 	        Runner runner = new Runner();
 	        sql = runner.run(ocl, descriptionMode);
@@ -37,6 +37,7 @@ public class HomeBean implements Serializable{
         } catch (Exception e) {
             sql = "Invalid OCL expression";
         }
+	    return null;
     }
 
     public String getResultStyle() {
