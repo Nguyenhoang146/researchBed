@@ -22,16 +22,7 @@
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>
-                com.wordnik.swagger.jaxrs.json,
                 resources
-            </param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>
-                com.wordnik.swagger.jersey.listing.ApiListingResourceJSON,
-                com.wordnik.swagger.jersey.listing.JerseyApiDeclarationProvider,
-                com.wordnik.swagger.jersey.listing.JerseyResourceListingProvider
             </param-value>
         </init-param>
     </servlet>
