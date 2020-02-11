@@ -16,33 +16,37 @@ limitations under the License.
 @author: ngpbh
 ***************************************************************************/
 
-
 package resources;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-@Path("/map")
+@Path("/ocl2psql")
 @Produces("application/json")
 public class MappingResources {
+
     @GET
-    public Response mapping(@QueryParam("ocl") String ocl,
-        @DefaultValue("textual") @QueryParam("format") String format){
-        if(ocl == null) {
+    @Path("/text")
+    public Response mappingFromOCLTextual(@QueryParam("ocl") String ocl) {
+        if (ocl == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                .entity("name parameter is mandatory")
-                .build();
-          }
-        if(format.equalsIgnoreCase("XMI")) {
-            return Response.status(Response.Status.OK).entity(new String("XMI")).build();
-        } else if (format.equalsIgnoreCase("textual")){
-            return Response.status(Response.Status.OK).entity(new String("TEXT")).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+                .entity("OCL expression is empty.").build();
         }
+        return Response.status(Response.Status.OK).entity(new String("TEXT"))
+            .build();
+    }
+    
+    @GET
+    @Path("/xmi")
+    public Response mappingFromOCLModel(@QueryParam("ocl") String ocl) {
+        if (ocl == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity("OCL expression is empty.").build();
+        }
+        return Response.status(Response.Status.OK).entity(new String("XMI"))
+            .build();
     }
 }
