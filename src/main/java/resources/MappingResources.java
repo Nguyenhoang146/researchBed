@@ -28,8 +28,8 @@ import javax.ws.rs.core.Response;
 @Produces("application/json")
 public class MappingResources {
 
-    @GET
     @Path("/text")
+    @GET
     public Response mappingFromOCLTextual(@QueryParam("ocl") String ocl) {
         if (ocl == null) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -39,8 +39,8 @@ public class MappingResources {
             .build();
     }
     
-    @GET
     @Path("/xmi")
+    @GET
     public Response mappingFromOCLModel(@QueryParam("ocl") String ocl) {
         if (ocl == null) {
             return Response.status(Response.Status.BAD_REQUEST)
