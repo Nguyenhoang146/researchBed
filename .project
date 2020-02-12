@@ -3,6 +3,10 @@
 	<name>researchBed</name>
 	<comment></comment>
 	<projects>
+		<project>org.vgu.se.ocl</project>
+		<project>OCL2PSQL</project>
+		<project>dm2schema</project>
+		<project>jocl</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

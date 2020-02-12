@@ -49,6 +49,6 @@ public class Runner {
         JSONArray json = (JSONArray) new JSONParser().parse(text);
         ocl2psql.setDataModelFromFile(json);
         ocl2psql.setDescriptionMode(descriptionMode);
-        return ocl2psql.mapToString(ocl);
+        return ocl2psql.mapOCLStringToSQLString(ocl);
     }
 }
