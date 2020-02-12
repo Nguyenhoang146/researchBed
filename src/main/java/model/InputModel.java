@@ -30,7 +30,7 @@ public class InputModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String contentType;
-    private String oclExpression;
+    private String content;
 
     public String getContentType() {
         return contentType;
@@ -40,20 +40,20 @@ public class InputModel implements Serializable {
         this.contentType = contentType;
     }
 
-    public String getOclExpression() {
-        return oclExpression;
+    public String getContent() {
+        return content;
     }
 
-    public void setOclExpression(String oclExpression) {
-        this.oclExpression = oclExpression;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @JsonCreator
     public InputModel(
         @JsonProperty("contentType") String contentType,
-        @JsonProperty("oclExpression") String oclExpression) {
+        @JsonProperty("content") String content) {
         this.contentType = contentType;
-        this.oclExpression = oclExpression;
+        this.content = content;
     }
 
     public InputModel() {

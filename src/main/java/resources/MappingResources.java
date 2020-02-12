@@ -47,9 +47,10 @@ public class MappingResources {
         @DefaultValue("false") @QueryParam("oclAsXmi") Boolean oclAsXmi,
         @DefaultValue("false") @QueryParam("sqlAsXmi") Boolean sqlAsXmi,
         InputModel model) {
-        if (model.getOclExpression() == null
-            || model.getOclExpression().isEmpty()) {
-            OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "OCL expression is empty");
+        if (model.getContent() == null || model.getContent().isEmpty()) {
+            OutputModel outputModel = new OutputModel(
+                Response.Status.BAD_REQUEST.getStatusCode(), "",
+                "Empty input: The OCL expression is empty");
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
@@ -61,18 +62,24 @@ public class MappingResources {
                         .parse(model.getDefaultDataModelJSON());
                     ocl2psql.setDataModelFromFile(json);
                     String output = ocl2psql
-                        .mapOCLStringToSQLString(model.getOclExpression());
+                        .mapOCLStringToSQLString(model.getContent());
                     output = output.replace("\n", " ");
-                    OutputModel outputModel = new OutputModel(Response.Status.OK.getStatusCode(), "statement/text", output);
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.OK.getStatusCode(), "statement/text",
+                        output);
                     return Response.status(Response.Status.OK)
                         .entity(outputModel).build();
                 } catch (Exception e) {
-                    OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "The input is invalid");
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.BAD_REQUEST.getStatusCode(), "",
+                        "Invalid input: The OCL expression cannot be parsed");
                     return Response.status(Response.Status.BAD_REQUEST)
                         .entity(outputModel).build();
                 }
             } else {
-                OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "The input is invalid");
+                OutputModel outputModel = new OutputModel(
+                    Response.Status.BAD_REQUEST.getStatusCode(), "",
+                    "Invalid input: Different input type is required");
                 return Response.status(Response.Status.BAD_REQUEST)
                     .entity(outputModel).build();
             }
@@ -81,68 +88,56 @@ public class MappingResources {
                 OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
                 try {
                     String output = ocl2psql.mapOCLXMIToSQLString(
-                        model.getDefaultDataModelName(), model.getDefaultDataModelXMI(),
-                        model.getOclExpression());
+                        model.getDefaultDataModelName(),
+                        model.getDefaultDataModelXMI(), model.getContent());
                     output = output.replace("\n", " ");
-                    OutputModel outputModel = new OutputModel(Response.Status.OK.getStatusCode(), "statement/text", output);
-                    return Response.status(Response.Status.OK).entity(outputModel).build();
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.OK.getStatusCode(), "statement/text",
+                        output);
+                    return Response.status(Response.Status.OK)
+                        .entity(outputModel).build();
                 } catch (IOException e) {
-                    OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "The input is invalid");
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.BAD_REQUEST.getStatusCode(), "",
+                        "Invalid input: The OCL expression cannot be parsed");
                     return Response.status(Response.Status.BAD_REQUEST)
                         .entity(outputModel).build();
                 }
             } else {
-                OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "The input is invalid");
+                OutputModel outputModel = new OutputModel(
+                    Response.Status.BAD_REQUEST.getStatusCode(), "",
+                    "Invalid input: Different input type is required");
                 return Response.status(Response.Status.BAD_REQUEST)
                     .entity(outputModel).build();
             }
         } else if (!oclAsXmi && sqlAsXmi) {
             if (model.getContentType().equals("expression/text")) {
-                OutputModel outputModel = new OutputModel(Response.Status.NOT_IMPLEMENTED.getStatusCode(), "", "The input is invalid");
+                OutputModel outputModel = new OutputModel(
+                    Response.Status.NOT_IMPLEMENTED.getStatusCode(), "",
+                    "We are working on it");
                 return Response.status(Response.Status.NOT_IMPLEMENTED)
                     .entity(outputModel).build();
             } else {
-                OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "The input is invalid");
+                OutputModel outputModel = new OutputModel(
+                    Response.Status.BAD_REQUEST.getStatusCode(), "",
+                    "Invalid input: Different input type is required");
                 return Response.status(Response.Status.BAD_REQUEST)
                     .entity(outputModel).build();
             }
         } else {
             if (model.getContentType().equals("expression/xml")) {
-                OutputModel outputModel = new OutputModel(Response.Status.NOT_IMPLEMENTED.getStatusCode(), "", "The input is invalid");
+                OutputModel outputModel = new OutputModel(
+                    Response.Status.NOT_IMPLEMENTED.getStatusCode(), "",
+                    "We are working on it");
                 return Response.status(Response.Status.NOT_IMPLEMENTED)
                     .entity(outputModel).build();
             } else {
-                OutputModel outputModel = new OutputModel(Response.Status.BAD_REQUEST.getStatusCode(), "", "The input is invalid");
+                OutputModel outputModel = new OutputModel(
+                    Response.Status.BAD_REQUEST.getStatusCode(), "",
+                    "Invalid input: Different input type is required");
                 return Response.status(Response.Status.BAD_REQUEST)
                     .entity(outputModel).build();
             }
         }
     }
-
-//    @Path("/xmi")
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response mappingFromOCLModel(XMIModel model) {
-//        if (model.getOclExpression() == null
-//            || model.getOclExpression().isEmpty()) {
-//            return Response.status(Response.Status.BAD_REQUEST)
-//                .entity("OCL expression is empty.").build();
-//        }
-//        if (model.getDataModel() == null || model.getDataModel().isEmpty()) {
-//            model.setDataModelName("CarPerson");
-//            model.setDataModel(
-//                "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <DM:EDataModel xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:DM=\"http://www.example.org/ocl/dm\" xsi:schemaLocation=\"http://www.example.org/ocl/dm ocl.ecore#//dm\"> <classes name=\"Car\"> <ends name=\"owners\" mult=\"*\" target=\"//@classes.1\" opp=\"//@classes.1/@ends.0\"/> <attributes name=\"color\" type=\"String\"/> </classes> <classes name=\"Person\"> <ends name=\"ownedCars\" mult=\"*\" target=\"//@classes.0\" opp=\"//@classes.0/@ends.0\"/> <attributes name=\"name\" type=\"String\"/> </classes> </DM:EDataModel>");
-//        }
-//        OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
-//        try {
-//            String output = ocl2psql.mapOCLXMIToSQLString(
-//                model.getDataModelName(), model.getDataModel(),
-//                model.getOclExpression());
-//            return Response.status(Response.Status.OK).entity(output).build();
-//        } catch (IOException e) {
-//            return Response.status(Response.Status.BAD_REQUEST)
-//                .entity("The input is invalid.").build();
-//        }
-//    }
 }
