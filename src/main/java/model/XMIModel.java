@@ -18,10 +18,19 @@ limitations under the License.
 
 package model;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-public class XMIModel {
+@JsonRootName("XMIModel")
+public class XMIModel implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    @JsonProperty
     private String dataModelName;
     private String dataModel;
     private String oclExpression;

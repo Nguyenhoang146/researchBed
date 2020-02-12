@@ -4,45 +4,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <dependent-module archiveName="org.eclipse.equinox.app_1.4.100.v20190215-2139.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.equinox.app_1.4.100.v20190215-2139.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.core.jobs_3.10.300.v20190215-2048.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.core.jobs_3.10.300.v20190215-2048.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.osgi_3.13.300.v20190218-1622.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.osgi_3.13.300.v20190218-1622.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.core.contenttype_3.7.300.v20190215-2048.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.core.contenttype_3.7.300.v20190215-2048.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.emf.common_2.17.0.v20190920-0401.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.emf.common_2.17.0.v20190920-0401.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="ocl2psql.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/ocl2psql.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.core.runtime_3.15.200.v20190301-1641.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.core.runtime_3.15.200.v20190301-1641.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="ocl.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/ocl.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.emf.ecore_2.20.0.v20190920-0401.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.emf.ecore_2.20.0.v20190920-0401.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.equinox.common_3.10.300.v20190218-2100.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.equinox.common_3.10.300.v20190218-2100.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="org.eclipse.equinox.preferences_3.7.300.v20190218-2100.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/org.eclipse.equinox.preferences_3.7.300.v20190218-2100.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="javax.inject_1.0.0.v20091030.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/researchBed/src/main/resources/javax.inject_1.0.0.v20091030.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="/"/>
         <property name="java-output-path" value="/researchBed/target/classes"/>
     </wb-module>
