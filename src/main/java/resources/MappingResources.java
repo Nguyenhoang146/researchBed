@@ -32,6 +32,8 @@ import javax.ws.rs.core.Response;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.vgu.ocl2psql.main.OCL2PSQL_2;
+import org.vgu.se.sql.EStatement;
+import org.vgu.se.sql.parser.SQLParser;
 
 import model.InputModel;
 import model.OutputModel;
@@ -112,11 +114,26 @@ public class MappingResources {
             }
         } else if (!oclAsXmi && sqlAsXmi) {
             if (model.getContentType().equals("expression/text")) {
-                OutputModel outputModel = new OutputModel(
-                    Response.Status.NOT_IMPLEMENTED.getStatusCode(), "",
-                    "We are working on it");
-                return Response.status(Response.Status.NOT_IMPLEMENTED)
-                    .entity(outputModel).build();
+                try {
+                    OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+                    JSONArray json = (JSONArray) new JSONParser()
+                        .parse(model.getDefaultDataModelJSON());
+                    ocl2psql.setDataModelFromFile(json);
+                    EStatement output = ocl2psql
+                        .mapOCLStringToSQLXMI(model.getContent());
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.OK.getStatusCode(), "statement/xml",
+                        SQLParser.outputEStatementAsXMI(output));
+                    return Response.status(Response.Status.OK)
+                        .entity(outputModel).build();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.BAD_REQUEST.getStatusCode(), "",
+                        "Invalid input: The OCL expression cannot be parsed");
+                    return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(outputModel).build();
+                }
             } else {
                 OutputModel outputModel = new OutputModel(
                     Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -126,11 +143,23 @@ public class MappingResources {
             }
         } else {
             if (model.getContentType().equals("expression/xml")) {
-                OutputModel outputModel = new OutputModel(
-                    Response.Status.NOT_IMPLEMENTED.getStatusCode(), "",
-                    "We are working on it");
-                return Response.status(Response.Status.NOT_IMPLEMENTED)
-                    .entity(outputModel).build();
+                OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+                try {
+                    EStatement output = ocl2psql.mapOCLXMIToSQLXMI(
+                        model.getDefaultDataModelName(),
+                        model.getDefaultDataModelXMI(), model.getContent());
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.OK.getStatusCode(), "statement/xml",
+                        SQLParser.outputEStatementAsXMI(output));
+                    return Response.status(Response.Status.OK)
+                        .entity(outputModel).build();
+                } catch (IOException e) {
+                    OutputModel outputModel = new OutputModel(
+                        Response.Status.BAD_REQUEST.getStatusCode(), "",
+                        "Invalid input: The OCL expression cannot be parsed");
+                    return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(outputModel).build();
+                }
             } else {
                 OutputModel outputModel = new OutputModel(
                     Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -140,4 +169,25 @@ public class MappingResources {
             }
         }
     }
+
+//    @Path("/ttc")
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response ttcUnitTest(@QueryParam("phase") Integer phase,
+//        @QueryParam("stage") Integer stage, InputModel sqlModel) {
+//        if (phase == null || stage == null || sqlModel == null
+//            || sqlModel.getContent() == null
+//            || sqlModel.getContent().isEmpty()) {
+//            OutputModel outputModel = new OutputModel(
+//                Response.Status.BAD_REQUEST.getStatusCode(), "",
+//                "Invalid input");
+//            return Response.status(Response.Status.BAD_REQUEST)
+//                .entity(outputModel).build();
+//        }
+//        else {
+//            
+//            
+//        }
+//    }
 }

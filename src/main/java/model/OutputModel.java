@@ -32,7 +32,7 @@ public class OutputModel implements Serializable {
 
     private Integer status;
     private String contentType;
-    private String sqlStatement;
+    private String content;
 
     public Integer getStatus() {
         return status;
@@ -50,25 +50,25 @@ public class OutputModel implements Serializable {
         this.contentType = contentType;
     }
 
-    public String getSqlStatement() {
-        return sqlStatement;
-    }
-
-    public void setSqlStatement(String sqlStatement) {
-        this.sqlStatement = sqlStatement;
-    }
-
     @JsonCreator
     public OutputModel(
         @JsonProperty("status") Integer status, 
         @JsonProperty("contentType") String contentType,
-        @JsonProperty("sqlStatement") String sqlStatement) {
+        @JsonProperty("content") String content) {
         this.status = status;
         this.contentType = contentType;
-        this.sqlStatement = sqlStatement;
+        this.setContent(content);
     }
 
     public OutputModel() {
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }

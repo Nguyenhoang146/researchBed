@@ -31,6 +31,7 @@ public class MappingApplication extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<Class<?>>();
         resources.add(MappingResources.class);
+        resources.add(TTCResources.class);
         return resources;
     }
 }
