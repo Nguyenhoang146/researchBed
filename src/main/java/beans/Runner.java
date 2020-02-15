@@ -1,4 +1,4 @@
-package bean;
+package beans;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -16,28 +16,19 @@ limitations under the License.
 @author: ngpbh
 ***************************************************************************/
 
-package resources;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+package models;
 
-import models.InputModel;
-import services.TTCServices;
+import java.util.List;
 
-@Path("/ttc")
-public class TTCResources {
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response assertStatement(
-        @QueryParam("phase") Integer phase,
-        @QueryParam("challenge") Integer challenge,
-        InputModel model) {
-        return TTCServices.assertStatement(phase, challenge, model);
+public class ResultSet {
+    private List<ResultRow> rows;
+
+    public List<ResultRow> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<ResultRow> rows) {
+        this.rows = rows;
     }
 }
