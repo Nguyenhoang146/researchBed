@@ -22,16 +22,33 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.naming.NamingException;
 import javax.ws.rs.core.Response;
 
 import org.vgu.se.sql.parser.SQLParser;
 
 import models.InputModel;
 import models.OutputModel;
+import models.ReportModel;
+import models.ResultRow;
+import models.ResultSet;
+import models.ScenarioStatusModel;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
+import resources.Configuration;
+import utils.CallStatements;
+import utils.ComparasionUtils;
+import utils.Results;
 
 public class TTCServices {
 
@@ -44,28 +61,30 @@ public class TTCServices {
             BufferedWriter output = null;
             File file = null;
             try {
-                file = new File(dirPath.concat("//").concat("sqlStatement.xmi"));
+                file = new File(
+                    dirPath.concat("//").concat("sqlStatement.xmi"));
                 output = new BufferedWriter(new FileWriter(file));
                 output.write(model.getContent());
-            } catch ( IOException e ) {
+            } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-              if ( output != null ) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    OutputModel outputModel = new OutputModel(
-                        Response.Status.BAD_REQUEST.getStatusCode(), "",
-                        "TODO: Add exception description");
-                    return Response.status(Response.Status.BAD_REQUEST)
-                        .entity(outputModel).build();
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        OutputModel outputModel = new OutputModel(
+                            Response.Status.BAD_REQUEST.getStatusCode(), "",
+                            "TODO: Add exception description");
+                        return Response.status(Response.Status.BAD_REQUEST)
+                            .entity(outputModel).build();
+                    }
                 }
-              }
             }
             String filePath = file.getAbsolutePath();
             try {
-                inputStatement = SQLParser.transform(SQLParser.loadEStatement(filePath));
+                inputStatement = SQLParser
+                    .transform(SQLParser.loadEStatement(filePath));
             } catch (IOException e) {
                 e.printStackTrace();
                 OutputModel outputModel = new OutputModel(
@@ -117,16 +136,14 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase9(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase9(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase9Challenge0(inputStatement);
         case 1:
-            return assertPhase9Challenge1(inputStatement);
         case 2:
-            return assertPhase9Challenge2(inputStatement);
         case 3:
-            return assertPhase9Challenge3(inputStatement);
+            return assertPhaseChallenge(inputStatement, 9, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -136,36 +153,14 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase9Challenge3(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase9Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase9Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase9Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase8(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase8(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase8Challenge0(inputStatement);
         case 1:
-            return assertPhase8Challenge1(inputStatement);
         case 2:
-            return assertPhase8Challenge2(inputStatement);
         case 3:
-            return assertPhase8Challenge3(inputStatement);
+            return assertPhaseChallenge(inputStatement, 8, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -175,36 +170,14 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase8Challenge3(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase8Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase8Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase8Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase7(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase7(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase7Challenge0(inputStatement);
         case 1:
-            return assertPhase7Challenge1(inputStatement);
         case 2:
-            return assertPhase7Challenge2(inputStatement);
         case 3:
-            return assertPhase7Challenge3(inputStatement);
+            return assertPhaseChallenge(inputStatement, 7, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -214,36 +187,43 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase7Challenge3(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase7Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase7Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase7Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase6(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase6(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase6Challenge0(inputStatement);
         case 1:
-            return assertPhase6Challenge1(inputStatement);
+            return assertPhaseChallenge(inputStatement, 6, challenge);
+        default:
+            OutputModel outputModel = new OutputModel(
+                Response.Status.BAD_REQUEST.getStatusCode(), "",
+                "TODO: Add exception description");
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(outputModel).build();
+        }
+    }
+
+    private static Response assertPhase5(Integer challenge,
+        Statement inputStatement) {
+        switch (challenge) {
+        case 0:
+        case 1:
+            return assertPhaseChallenge(inputStatement, 5, challenge);
+        default:
+            OutputModel outputModel = new OutputModel(
+                Response.Status.BAD_REQUEST.getStatusCode(), "",
+                "TODO: Add exception description");
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(outputModel).build();
+        }
+    }
+
+    private static Response assertPhase4(Integer challenge,
+        Statement inputStatement) {
+        switch (challenge) {
+        case 0:
+        case 1:
         case 2:
-            return assertPhase6Challenge2(inputStatement);
-        case 3:
-            return assertPhase6Challenge3(inputStatement);
+            return assertPhaseChallenge(inputStatement, 4, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -253,32 +233,12 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase6Challenge3(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase6Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase6Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase6Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase5(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase3(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase5Challenge0(inputStatement);
         case 1:
-            return assertPhase5Challenge1(inputStatement);
+            return assertPhaseChallenge(inputStatement, 3, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -288,24 +248,27 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase5Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase5Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase4(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase2(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase4Challenge0(inputStatement);
+            return assertPhaseChallenge(inputStatement, 2, challenge);
+        default:
+            OutputModel outputModel = new OutputModel(
+                Response.Status.BAD_REQUEST.getStatusCode(), "",
+                "TODO: Add exception description");
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(outputModel).build();
+        }
+    }
+
+    private static Response assertPhase1(Integer challenge,
+        Statement inputStatement) {
+        switch (challenge) {
+        case 0:
         case 1:
-            return assertPhase4Challenge1(inputStatement);
         case 2:
-            return assertPhase4Challenge2(inputStatement);
+            return assertPhaseChallenge(inputStatement, 1, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -315,72 +278,13 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase4Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase4Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase4Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase3(Integer challenge, Statement inputStatement) {
+    private static Response assertPhase0(Integer challenge,
+        Statement inputStatement) {
         switch (challenge) {
         case 0:
-            return assertPhase3Challenge0(inputStatement);
         case 1:
-            return assertPhase3Challenge1(inputStatement);
-        default:
-            OutputModel outputModel = new OutputModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase3Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase3Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase2(Integer challenge, Statement inputStatement) {
-        switch (challenge) {
-        case 0:
-            return assertPhase2Challenge0(inputStatement);
-        default:
-            OutputModel outputModel = new OutputModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase2Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase1(Integer challenge, Statement inputStatement) {
-        switch (challenge) {
-        case 0:
-            return assertPhase1Challenge0(inputStatement);
-        case 1:
-            return assertPhase1Challenge1(inputStatement);
         case 2:
-            return assertPhase1Challenge2(inputStatement);
+            return assertPhaseChallenge(inputStatement, 0, challenge);
         default:
             OutputModel outputModel = new OutputModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
@@ -390,50 +294,90 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhase1Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
+    private static Response assertPhaseChallenge(Statement inputStatement, Integer phase, Integer challenge) {
+        ReportModel outputModel = assertStatement(inputStatement, phase, challenge);
+        return Response.status(Response.Status.OK).entity(outputModel).build();
     }
 
-    private static Response assertPhase1Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase1Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase0(Integer challenge, Statement inputStatement) {
-        switch (challenge) {
-        case 0:
-            return assertPhase0Challenge0(inputStatement);
-        case 1:
-            return assertPhase0Challenge1(inputStatement);
-        case 2:
-            return assertPhase0Challenge2(inputStatement);
-        default:
-            OutputModel outputModel = new OutputModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
+    private static ReportModel assertStatement(Statement inputStatement, Integer phase, Integer challenge) {
+        ReportModel outputModel = new ReportModel();
+        List<ScenarioStatusModel> scenarii = new ArrayList<ScenarioStatusModel>();
+        for (int i = 1; i <= 7; i++) {
+            ScenarioStatusModel scenario = new ScenarioStatusModel();
+            scenario.setScenario(i);
+            prepareEnvironment(i);
+            ResultSet actualResult = executeStatement(inputStatement);
+            ResultSet expectedResult = Results.getExpectedResult(0, challenge, i);
+            scenario.setStatus(
+                ComparasionUtils.equals(actualResult, expectedResult));
+            scenarii.add(scenario);
         }
+        outputModel.setScenarii(scenarii);
+        return outputModel;
     }
 
-    private static Response assertPhase0Challenge2(Statement inputStatement) {
-        // TODO Auto-generated method stub
+    private static ResultSet executeStatement(Statement inputStatement) {
+        try (Connection db = Configuration.getConnection()) {
+            ResultSet actualResult = new ResultSet();
+            List<ResultRow> rows = new ArrayList<ResultRow>();
+            String callStm = String.format(inputStatement.toString());
+            PreparedStatement st = db.prepareStatement(callStm);
+
+            java.sql.ResultSet rs = st.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            // collect column names
+            List<String> columnNames = new ArrayList<>();
+            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                columnNames.add(rsmd.getColumnLabel(i));
+            }
+
+//            int rowIndex = 0;
+            while (rs.next()) {
+//                rowIndex++;
+                // collect row data as objects in a List
+                List<Object> rowData = new ArrayList<>();
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    rowData.add(rs.getObject(i));
+                }
+                // for test purposes, dump contents to check our results
+                // (the real code would pass the "rowData" List to some
+                // other routine)
+//                System.out.printf("Row %d%n", rowIndex);
+                ResultRow row = new ResultRow();
+                HashMap<String, String> cols = new HashMap<String, String>();
+                for (int colIndex = 0; colIndex < rsmd
+                    .getColumnCount(); colIndex++) {
+//                    String objType = "null";
+                    String objString = "";
+                    Object columnObject = rowData.get(colIndex);
+                    if (columnObject != null) {
+                        objString = columnObject.toString();
+//                        objType = columnObject.getClass().getName();
+                    }
+//                    System.out.printf("  %s: %s(%s)%n",
+//                        columnNames.get(colIndex), objString, objType);
+                    cols.put(columnNames.get(colIndex), objString);
+                }
+                row.setCols(cols);
+                rows.add(row);
+            }
+            actualResult.setRows(rows);
+            return actualResult;
+        } catch (SQLException | NamingException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    private static Response assertPhase0Challenge1(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private static Response assertPhase0Challenge0(Statement inputStatement) {
-        // TODO Auto-generated method stub
-        return null;
+    private static void prepareEnvironment(Integer scenario) {
+        String callStatement = CallStatements.get(scenario);
+        try (Connection db = Configuration.getConnection()) {
+            CallableStatement cs;
+            cs = db.prepareCall(callStatement);
+            cs.execute();
+        } catch (SQLException | NamingException e) {
+            e.printStackTrace();
+        }
     }
 }
