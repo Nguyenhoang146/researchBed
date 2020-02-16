@@ -19,9 +19,9 @@ public class Configuration {
         Context envContext = (Context) initContext.lookup("java:comp/env");
 
         DataSource ds = (DataSource) envContext.lookup("jdbc/ttcdb");
-        return ds.getConnection();
+//        return ds.getConnection();
         
-        //return getRemoteConnection();
+        return getRemoteConnection();
     }
 
     private static Connection getRemoteConnection() {
@@ -33,7 +33,7 @@ public class Configuration {
                 String password = System.getProperty("RDS_PASSWORD");
                 String hostname = System.getProperty("RDS_HOSTNAME");
                 String port = System.getProperty("RDS_PORT");
-                String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port
+                String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port
                     + "/" + dbName + "?user=" + userName + "&password="
                     + password;
                 Connection con = DriverManager.getConnection(jdbcUrl);
