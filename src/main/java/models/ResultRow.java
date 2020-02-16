@@ -30,4 +30,41 @@ public class ResultRow {
     public void setCols(HashMap<String, String> cols) {
         this.cols = cols;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cols == null) ? 0 : cols.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ResultRow other = (ResultRow) obj;
+        if (cols == null) {
+            if (other.cols != null)
+                return false;
+        } else if (!compareCols(other.cols))
+            return false;
+        return true;
+    }
+
+    private boolean compareCols(HashMap<String, String> obj) {
+        if(cols.size() != obj.size())
+            return false;
+        return cols.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "\n\t[" + cols + "]";
+    }
+    
 }

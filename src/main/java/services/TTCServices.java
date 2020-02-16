@@ -47,7 +47,6 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import resources.Configuration;
 import utils.CallStatements;
-import utils.ComparasionUtils;
 import utils.Results;
 
 public class TTCServices {
@@ -307,9 +306,8 @@ public class TTCServices {
             scenario.setScenario(i);
             prepareEnvironment(i);
             ResultSet actualResult = executeStatement(inputStatement);
-            ResultSet expectedResult = Results.getExpectedResult(0, challenge, i);
-            scenario.setStatus(
-                ComparasionUtils.equals(actualResult, expectedResult));
+            ResultSet expectedResult = Results.getExpectedResult(phase, challenge, i);
+            scenario.setStatus(expectedResult.equals(actualResult));
             scenarii.add(scenario);
         }
         outputModel.setScenarii(scenarii);

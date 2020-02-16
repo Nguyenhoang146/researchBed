@@ -74,7 +74,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/resources/ocl.jar">
+	<classpathentry kind="lib" path="src/main/resources/ocl.jar" sourcepath="/org.vgu.se.ocl">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

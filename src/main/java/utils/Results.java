@@ -286,10 +286,6 @@ public class Results {
     private static ResultSet getResultPhase2Challenge0Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -659,10 +655,6 @@ public class Results {
     private static ResultSet getResultPhase4Challenge2Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -792,10 +784,6 @@ public class Results {
     private static ResultSet getResultPhase4Challenge1Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -925,10 +913,6 @@ public class Results {
     private static ResultSet getResultPhase4Challenge0Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -1067,10 +1051,6 @@ public class Results {
     private static ResultSet getResultPhase5Challenge1Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -1200,10 +1180,6 @@ public class Results {
     private static ResultSet getResultPhase5Challenge0Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -1342,10 +1318,6 @@ public class Results {
     private static ResultSet getResultPhase6Challenge1Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
@@ -1475,10 +1447,6 @@ public class Results {
     private static ResultSet getResultPhase6Challenge0Scenario1() {
         ResultSet resultSet = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
-        ResultRow row1 = new ResultRow();
-        HashMap<String, String> cols = new HashMap<String, String>();
-        row1.setCols(cols);
-        rows.add(row1);
         resultSet.setRows(rows);
         return resultSet;
     }
