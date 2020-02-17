@@ -53,7 +53,6 @@ public class TTCServices {
 
     public static Response assertStatement(Integer phase, Integer challenge,
         InputModel model) {
-
         Statement inputStatement = null;
         if (model.getContentType().equals("statement/xml")) {
             final String dirPath = System.getProperty("java.io.tmpdir");
@@ -104,7 +103,6 @@ public class TTCServices {
                     .entity(outputModel).build();
             }
         }
-
         switch (phase) {
         case 0:
             return assertPhase0(challenge, inputStatement);
