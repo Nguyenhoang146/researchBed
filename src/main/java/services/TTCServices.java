@@ -305,7 +305,7 @@ public class TTCServices {
             prepareEnvironment(i);
             ResultSet actualResult = executeStatement(inputStatement);
             ResultSet expectedResult = Results.getExpectedResult(phase, challenge, i);
-            scenario.setStatus(expectedResult.equals(actualResult));
+            scenario.setStatus(expectedResult.equals(actualResult)? "passed" : "failed");
             scenarii.add(scenario);
         }
         outputModel.setScenarii(scenarii);

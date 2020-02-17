@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ScenarioStatusModel {
     private Integer scenario;
-    private Boolean status;
+    private String status;
 
     public Integer getScenario() {
         return scenario;
@@ -33,18 +33,18 @@ public class ScenarioStatusModel {
         this.scenario = scenario;
     }
 
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
     @JsonCreator
     public ScenarioStatusModel(
         @JsonProperty("scenario") Integer scenario, 
-        @JsonProperty("result") Boolean status) {
+        @JsonProperty("status") String status) {
         this.scenario = scenario;
         this.status = status;
     }
