@@ -47,7 +47,7 @@ public class TTCResources {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response assertStatement(
-        @QueryParam("phase") Integer phase,
+        @QueryParam("stage") Integer phase,
         @QueryParam("challenge") Integer challenge,
         InputModel model) {
         Response response = TTCServices.assertStatement(phase, challenge, model);
