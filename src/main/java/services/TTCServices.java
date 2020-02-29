@@ -36,14 +36,12 @@ import javax.ws.rs.core.Response;
 
 import org.vgu.se.sql.parser.SQLParser;
 
-import models.InputModel;
-import models.OutputModel;
+import models.InputMappingDefaultModel;
+import models.OutputMappingModel;
 import models.ReportModel;
 import models.ResultRow;
 import models.ResultSet;
 import models.ScenarioStatusModel;
-import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import resources.Configuration;
 import utils.CallStatements;
@@ -52,8 +50,9 @@ import utils.Results;
 public class TTCServices {
 
     public static Response assertStatement(Integer phase, Integer challenge,
-        InputModel model) {
-        Statement inputStatement = null;
+        InputMappingDefaultModel model) {
+        Statement statement = null;
+        String inputStatement = null;
         if (model.getContentType().equals("statement/xml")) {
             final String dirPath = System.getProperty("java.io.tmpdir");
             BufferedWriter output = null;
@@ -71,7 +70,7 @@ public class TTCServices {
                         output.close();
                     } catch (IOException e) {
                         e.printStackTrace();
-                        OutputModel outputModel = new OutputModel(
+                        OutputMappingModel outputModel = new OutputMappingModel(
                             Response.Status.BAD_REQUEST.getStatusCode(), "",
                             "TODO: Add exception description");
                         return Response.status(Response.Status.BAD_REQUEST)
@@ -81,27 +80,25 @@ public class TTCServices {
             }
             String filePath = file.getAbsolutePath();
             try {
-                inputStatement = SQLParser
+                statement = SQLParser
                     .transform(SQLParser.loadEStatement(filePath));
+                inputStatement = statement.toString();
             } catch (IOException e) {
                 e.printStackTrace();
-                OutputModel outputModel = new OutputModel(
+                OutputMappingModel outputModel = new OutputMappingModel(
                     Response.Status.BAD_REQUEST.getStatusCode(), "",
                     "TODO: Add exception description");
                 return Response.status(Response.Status.BAD_REQUEST)
                     .entity(outputModel).build();
             }
+        } else if (model.getContentType().equals("statement/text")) {
+            inputStatement = model.getContent();
         } else {
-            try {
-                inputStatement = CCJSqlParserUtil.parse(model.getContent());
-            } catch (JSQLParserException e) {
-                e.printStackTrace();
-                OutputModel outputModel = new OutputModel(
-                    Response.Status.BAD_REQUEST.getStatusCode(), "",
-                    "TODO: Add exception description");
-                return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(outputModel).build();
-            }
+            OutputMappingModel outputModel = new OutputMappingModel(
+                Response.Status.BAD_REQUEST.getStatusCode(), "",
+                "TODO: Add exception description");
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(outputModel).build();
         }
         switch (phase) {
         case 0:
@@ -125,7 +122,7 @@ public class TTCServices {
         case 9:
             return assertPhase9(challenge, inputStatement);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -134,7 +131,7 @@ public class TTCServices {
     }
 
     private static Response assertPhase9(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
@@ -142,7 +139,7 @@ public class TTCServices {
         case 3:
             return assertPhaseChallenge(inputStatement, 9, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -151,7 +148,7 @@ public class TTCServices {
     }
 
     private static Response assertPhase8(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
@@ -159,7 +156,7 @@ public class TTCServices {
         case 3:
             return assertPhaseChallenge(inputStatement, 8, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -168,7 +165,7 @@ public class TTCServices {
     }
 
     private static Response assertPhase7(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
@@ -176,7 +173,7 @@ public class TTCServices {
         case 3:
             return assertPhaseChallenge(inputStatement, 7, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -185,13 +182,13 @@ public class TTCServices {
     }
 
     private static Response assertPhase6(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
             return assertPhaseChallenge(inputStatement, 6, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -200,13 +197,13 @@ public class TTCServices {
     }
 
     private static Response assertPhase5(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
             return assertPhaseChallenge(inputStatement, 5, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -215,14 +212,14 @@ public class TTCServices {
     }
 
     private static Response assertPhase4(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
         case 2:
             return assertPhaseChallenge(inputStatement, 4, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -231,13 +228,13 @@ public class TTCServices {
     }
 
     private static Response assertPhase3(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
             return assertPhaseChallenge(inputStatement, 3, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -246,12 +243,12 @@ public class TTCServices {
     }
 
     private static Response assertPhase2(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
             return assertPhaseChallenge(inputStatement, 2, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -260,14 +257,14 @@ public class TTCServices {
     }
 
     private static Response assertPhase1(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
         case 2:
             return assertPhaseChallenge(inputStatement, 1, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -276,14 +273,14 @@ public class TTCServices {
     }
 
     private static Response assertPhase0(Integer challenge,
-        Statement inputStatement) {
+        String inputStatement) {
         switch (challenge) {
         case 0:
         case 1:
         case 2:
             return assertPhaseChallenge(inputStatement, 0, challenge);
         default:
-            OutputModel outputModel = new OutputModel(
+            OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
                 "TODO: Add exception description");
             return Response.status(Response.Status.BAD_REQUEST)
@@ -291,33 +288,40 @@ public class TTCServices {
         }
     }
 
-    private static Response assertPhaseChallenge(Statement inputStatement, Integer phase, Integer challenge) {
-        ReportModel outputModel = assertStatement(inputStatement, phase, challenge);
+    private static Response assertPhaseChallenge(String inputStatement,
+        Integer phase, Integer challenge) {
+        ReportModel outputModel = assertStatement(inputStatement, phase,
+            challenge);
         return Response.status(Response.Status.OK).entity(outputModel).build();
     }
 
-    private static ReportModel assertStatement(Statement inputStatement, Integer phase, Integer challenge) {
+    private static ReportModel assertStatement(String inputStatement,
+        Integer phase, Integer challenge) {
         ReportModel outputModel = new ReportModel();
         List<ScenarioStatusModel> scenarii = new ArrayList<ScenarioStatusModel>();
         for (int i = 1; i <= 7; i++) {
             ScenarioStatusModel scenario = new ScenarioStatusModel();
             scenario.setScenario(i);
             prepareEnvironment(i);
+            final long executionStartNanoTime = System.nanoTime();
             ResultSet actualResult = executeStatement(inputStatement);
-            ResultSet expectedResult = Results.getExpectedResult(phase, challenge, i);
-            scenario.setStatus(expectedResult.equals(actualResult)? "passed" : "failed");
+            final long executionEndNanoTime = System.nanoTime();
+            ResultSet expectedResult = Results.getExpectedResult(phase,
+                challenge, i);
+            scenario.setStatus(
+                expectedResult.equals(actualResult) ? "passed" : "failed");
+            scenario.setExecutionTime(executionEndNanoTime - executionStartNanoTime);
             scenarii.add(scenario);
         }
         outputModel.setScenarii(scenarii);
         return outputModel;
     }
 
-    private static ResultSet executeStatement(Statement inputStatement) {
+    private static ResultSet executeStatement(String inputStatement) {
         try (Connection db = Configuration.getConnection()) {
             ResultSet actualResult = new ResultSet();
             List<ResultRow> rows = new ArrayList<ResultRow>();
-            String callStm = String.format(inputStatement.toString());
-            PreparedStatement st = db.prepareStatement(callStm);
+            PreparedStatement st = db.prepareStatement(inputStatement);
 
             java.sql.ResultSet rs = st.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();

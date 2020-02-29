@@ -24,19 +24,19 @@ public class CallStatements {
     public static String get(Integer scenario) {
         switch (scenario) {
         case 1:
-            return "{call InjectScene1()}";
+            return "{call BuildScenario1()}";
         case 2:
-            return "{call InjectScene2()}";
+            return "{call BuildScenario2()}";
         case 3:
-            return "{call InjectScene3()}";
+            return "{call BuildScenario3()}";
         case 4:
-            return "{call InjectScene4()}";
+            return "{call BuildScenario4()}";
         case 5:
-            return "{call InjectScene5()}";
+            return "{call BuildScenario5()}";
         case 6:
-            return "{call InjectScene6()}";
+            return "{call BuildScenario6()}";
         default:
-            return "{call InjectScene7()}";
+            return "{call BuildScenario7()}";
         }
     }
 

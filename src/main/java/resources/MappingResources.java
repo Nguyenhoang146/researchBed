@@ -27,7 +27,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import models.InputModel;
+import models.InputMappingDefaultModel;
+import models.InputMappingModel;
 import services.MappingServices;
 
 @Path("/map")
@@ -39,7 +40,16 @@ public class MappingResources {
     @Produces(MediaType.APPLICATION_JSON)
     public Response mappingDefaultDataModel(
         @DefaultValue("false") @QueryParam("sqlAsXmi") Boolean sqlAsXmi,
-        InputModel model) {
+        InputMappingDefaultModel model) {
+        return MappingServices.postOCLExpression(sqlAsXmi, model);
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response mapping(
+        @DefaultValue("false") @QueryParam("sqlAsXmi") Boolean sqlAsXmi,
+        InputMappingModel model) {
         return MappingServices.postOCLExpression(sqlAsXmi, model);
     }
 }

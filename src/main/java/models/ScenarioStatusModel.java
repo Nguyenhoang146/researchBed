@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ScenarioStatusModel {
     private Integer scenario;
     private String status;
-
+    private long executionTime;
+    
     public Integer getScenario() {
         return scenario;
     }
@@ -44,12 +45,22 @@ public class ScenarioStatusModel {
     @JsonCreator
     public ScenarioStatusModel(
         @JsonProperty("scenario") Integer scenario, 
-        @JsonProperty("status") String status) {
+        @JsonProperty("status") String status,
+        @JsonProperty("executionTime") long executionTime) {
         this.scenario = scenario;
         this.status = status;
+        this.executionTime = executionTime;
     }
 
     public ScenarioStatusModel() {
+    }
+
+    public long getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(long executionTime) {
+        this.executionTime = executionTime;
     }
 
 }

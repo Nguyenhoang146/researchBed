@@ -6,9 +6,10 @@ import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.vgu.ocl2psql.main.OCL2PSQL_2;
+import org.vgu.ttc2020.model.TTCReturnModel;
 
 public class Runner {
-    public String run(String ocl, boolean descriptionMode) throws FileNotFoundException, IOException, Exception {
+    public TTCReturnModel run(String ocl, boolean descriptionMode) throws FileNotFoundException, IOException, Exception {
         OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
         final String text = "[\r\n" + 
             "    {\r\n" + 

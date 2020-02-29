@@ -16,77 +16,27 @@ limitations under the License.
 @author: ngpbh
 ***************************************************************************/
 
+
 package models;
 
-import java.io.Serializable;
+public interface InputModel {
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+    String getContent();
 
-public class InputModel implements Serializable {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+    String getContentType();
 
-    private String contentType;
-    private String content;
+    String getDefaultDataModelName();
 
-    public String getContentType() {
-        return contentType;
-    }
+    String getDefaultDataModelXMI();
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    @JsonCreator
-    public InputModel(
-        @JsonProperty("contentType") String contentType,
-        @JsonProperty("content") String content) {
-        this.contentType = contentType;
-        this.content = content;
-    }
-
-    public InputModel() {
-    }
-
-    public String getDefaultDataModelName() {
-        return "CarPerson";
-    }
-
-    public String getDefaultDataModelJSON() {
-        return "[\r\n" + "    {\r\n" + "        \"class\": \"Car\",\r\n"
-            + "        \"attributes\": [\r\n" + "            {\r\n"
-            + "                \"name\": \"color\",\r\n"
-            + "                \"type\": \"String\"\r\n" + "            }\r\n"
-            + "        ],\r\n" + "        \"ends\": [\r\n" + "            {\r\n"
-            + "                \"name\": \"owners\",\r\n"
-            + "                \"target\": \"Person\",\r\n"
-            + "                \"opp\": \"ownedCars\",\r\n"
-            + "                \"mult\": \"*\"\r\n" + "            }\r\n"
-            + "        ]\r\n" + "    },\r\n" + "    {\r\n"
-            + "        \"class\": \"Person\",\r\n"
-            + "        \"attributes\": [\r\n" + "            {\r\n"
-            + "                \"name\": \"name\",\r\n"
-            + "                \"type\": \"String\"\r\n" + "            }\r\n"
-            + "        ],\r\n" + "        \"ends\": [\r\n" + "            {\r\n"
-            + "                \"name\": \"ownedCars\",\r\n"
-            + "                \"target\": \"Car\",\r\n"
-            + "                \"opp\": \"owners\",\r\n"
-            + "                \"mult\": \"*\"\r\n" + "            }\r\n"
-            + "        ]\r\n" + "    }\r\n" + "]";
-    }
-
-    public String getDefaultDataModelXMI() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <DM:EDataModel xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:DM=\"http://www.example.org/ocl/dm\" xsi:schemaLocation=\"http://www.example.org/ocl/dm ocl.ecore#//dm\"> <classes name=\"Car\"> <ends name=\"owners\" mult=\"*\" target=\"//@classes.1\" opp=\"//@classes.1/@ends.0\"/> <attributes name=\"color\" type=\"String\"/> </classes> <classes name=\"Person\"> <ends name=\"ownedCars\" mult=\"*\" target=\"//@classes.0\" opp=\"//@classes.0/@ends.0\"/> <attributes name=\"name\" type=\"String\"/> </classes> </DM:EDataModel>";
-    }
+    String getDefaultDataModelJSON();
+    
+    String getSelf();
+   
+    String getCaller();
+    
+    String getValue();
+    
+    String getTarget();
+    
 }

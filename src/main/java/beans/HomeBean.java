@@ -6,18 +6,21 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-@ManagedBean(name="homeBean")
+import org.vgu.ttc2020.model.TTCReturnModel;
+
+@ManagedBean(name = "homeBean")
 @SessionScoped
-public class HomeBean implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String ocl;
+public class HomeBean implements Serializable {
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
+    private String ocl;
     private String sql;
-	private boolean descriptionMode;
-	
-	public String getOcl() {
+    private boolean descriptionMode;
+    private long transformationTime;
+
+    public String getOcl() {
         return ocl;
     }
 
@@ -42,25 +45,32 @@ public class HomeBean implements Serializable{
     }
 
     @PostConstruct
-	public void init() {
-		ocl = "Enter your OCL Expression here!";
-		sql = "";
-		descriptionMode = false;
-	}
-	
-	public String map() {
-	    try {
-	        Runner runner = new Runner();
-	        sql = runner.run(ocl, descriptionMode);
+    public void init() {
+        ocl = "Enter your OCL Expression here!";
+        sql = "";
+        descriptionMode = false;
+        transformationTime = 0L;
+    }
+
+    public String map() {
+        try {
+            Runner runner = new Runner();
+            TTCReturnModel returnModel = runner.run(ocl, descriptionMode);
+            sql = returnModel.getStatement();
+            transformationTime = returnModel.getOcl2sqlNanoTime();
         } catch (NullPointerException e) {
             sql = e.getMessage();
         } catch (Exception e) {
             sql = "Invalid OCL expression";
         }
-	    return null;
+        return null;
     }
 
-    public String getResultStyle() {
-        return this.descriptionMode ? "white-space: pre;  overflow: auto;" : "";
+    public long getTransformationTime() {
+        return transformationTime;
+    }
+
+    public void setTransformationTime(long transformationTime) {
+        this.transformationTime = transformationTime;
     }
 }

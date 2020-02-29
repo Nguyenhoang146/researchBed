@@ -36,7 +36,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import models.InputModel;
+import models.InputMappingDefaultModel;
 import models.ResultRow;
 import models.ResultSet;
 import services.TTCServices;
@@ -49,7 +49,7 @@ public class TTCResources {
     public Response assertStatement(
         @QueryParam("stage") Integer phase,
         @QueryParam("challenge") Integer challenge,
-        InputModel model) {
+        InputMappingDefaultModel model) {
         Response response = TTCServices.assertStatement(phase, challenge, model);
         return response;
     }
