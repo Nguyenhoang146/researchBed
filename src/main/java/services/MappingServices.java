@@ -81,7 +81,7 @@ public class MappingServices {
         } catch (IOException e) {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "Invalid input: The OCL expression cannot be parsed");
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
@@ -109,7 +109,7 @@ public class MappingServices {
             e.printStackTrace();
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "Invalid input: The OCL expression cannot be parsed");
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
@@ -134,7 +134,7 @@ public class MappingServices {
         } catch (IOException e) {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "Invalid input: The OCL expression cannot be parsed");
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
@@ -161,7 +161,7 @@ public class MappingServices {
         } catch (Exception e) {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "Invalid input: The OCL expression cannot be parsed");
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }

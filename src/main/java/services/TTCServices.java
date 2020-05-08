@@ -28,6 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class TTCServices {
                         e.printStackTrace();
                         OutputMappingModel outputModel = new OutputMappingModel(
                             Response.Status.BAD_REQUEST.getStatusCode(), "",
-                            "TODO: Add exception description");
+                            String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
                         return Response.status(Response.Status.BAD_REQUEST)
                             .entity(outputModel).build();
                     }
@@ -83,11 +84,11 @@ public class TTCServices {
                 statement = SQLParser
                     .transform(SQLParser.loadEStatement(filePath));
                 inputStatement = statement.toString();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 OutputMappingModel outputModel = new OutputMappingModel(
                     Response.Status.BAD_REQUEST.getStatusCode(), "",
-                    "TODO: Add exception description");
+                    String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
                 return Response.status(Response.Status.BAD_REQUEST)
                     .entity(outputModel).build();
             }
@@ -96,207 +97,32 @@ public class TTCServices {
         } else {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
+                "Invalid content type.");
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
-        switch (phase) {
-        case 0:
-            return assertPhase0(challenge, inputStatement);
-        case 1:
-            return assertPhase1(challenge, inputStatement);
-        case 2:
-            return assertPhase2(challenge, inputStatement);
-        case 3:
-            return assertPhase3(challenge, inputStatement);
-        case 4:
-            return assertPhase4(challenge, inputStatement);
-        case 5:
-            return assertPhase5(challenge, inputStatement);
-        case 6:
-            return assertPhase6(challenge, inputStatement);
-        case 7:
-            return assertPhase7(challenge, inputStatement);
-        case 8:
-            return assertPhase8(challenge, inputStatement);
-        case 9:
-            return assertPhase9(challenge, inputStatement);
-        default:
+        try {
+            return assertPhaseChallenge(inputStatement, phase, challenge);
+        } catch (Exception e) {
+            e.printStackTrace();
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
     }
 
-    private static Response assertPhase9(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-            return assertPhaseChallenge(inputStatement, 9, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase8(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-            return assertPhaseChallenge(inputStatement, 8, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase7(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-            return assertPhaseChallenge(inputStatement, 7, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase6(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-            return assertPhaseChallenge(inputStatement, 6, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase5(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-            return assertPhaseChallenge(inputStatement, 5, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase4(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-        case 2:
-            return assertPhaseChallenge(inputStatement, 4, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase3(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-            return assertPhaseChallenge(inputStatement, 3, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase2(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-            return assertPhaseChallenge(inputStatement, 2, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase1(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-        case 2:
-            return assertPhaseChallenge(inputStatement, 1, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
-
-    private static Response assertPhase0(Integer challenge,
-        String inputStatement) {
-        switch (challenge) {
-        case 0:
-        case 1:
-        case 2:
-            return assertPhaseChallenge(inputStatement, 0, challenge);
-        default:
-            OutputMappingModel outputModel = new OutputMappingModel(
-                Response.Status.BAD_REQUEST.getStatusCode(), "",
-                "TODO: Add exception description");
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(outputModel).build();
-        }
-    }
 
     private static Response assertPhaseChallenge(String inputStatement,
-        Integer phase, Integer challenge) {
+        Integer phase, Integer challenge) throws Exception {
         ReportModel outputModel = assertStatement(inputStatement, phase,
             challenge);
         return Response.status(Response.Status.OK).entity(outputModel).build();
     }
 
     private static ReportModel assertStatement(String inputStatement,
-        Integer phase, Integer challenge) {
+        Integer phase, Integer challenge) throws Exception {
         ReportModel outputModel = new ReportModel();
         List<ScenarioStatusModel> scenarii = new ArrayList<ScenarioStatusModel>();
         for (int i = 1; i <= 7; i++) {
@@ -304,17 +130,50 @@ public class TTCServices {
             scenario.setScenario(i);
             prepareEnvironment(i);
             final long executionStartNanoTime = System.nanoTime();
-            ResultSet actualResult = executeStatement(inputStatement);
+            ResultSet actualResultSet = executeStatement(inputStatement);
             final long executionEndNanoTime = System.nanoTime();
-            ResultSet expectedResult = Results.getExpectedResult(phase,
+//            ResultSet expectedResult = Results.getExpectedResult(phase,
+//                challenge, i);
+//            scenario.setStatus(
+//                expectedResult.equals(actualResult) ? "passed" : "failed");
+            List<String> expectedResult = Results.getExpectedResult(phase,
                 challenge, i);
+            List<String> actualResult = getActionResult(actualResultSet);
             scenario.setStatus(
-                expectedResult.equals(actualResult) ? "passed" : "failed");
-            scenario.setExecutionTime(executionEndNanoTime - executionStartNanoTime);
+              compare(expectedResult,actualResult) ? "passed" : "failed");
+            scenario.setExecutionTime(
+                executionEndNanoTime - executionStartNanoTime);
             scenarii.add(scenario);
         }
         outputModel.setScenarii(scenarii);
         return outputModel;
+    }
+
+    private static boolean compare(List<String> expectedResult,
+        List<String> actualResult) {
+        if(expectedResult.size() != actualResult.size())
+            return false;
+        else {
+            Collections.sort(expectedResult);
+            Collections.sort(actualResult);
+            for(int i = 0; i < expectedResult.size(); i++) {
+                if(!expectedResult.get(i).equals(actualResult.get(i)))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private static List<String> getActionResult(ResultSet actualResultSet)
+        throws Exception {
+        List<String> actualResult = new ArrayList<String>();
+        for (ResultRow row : actualResultSet.getRows()) {
+            if (row.getCols().containsKey("res")) {
+                actualResult.add(row.getCols().get("res"));
+            } else
+                throw new Exception("No res column defined in the given SQL statement");
+        }
+        return actualResult;
     }
 
     private static ResultSet executeStatement(String inputStatement) {

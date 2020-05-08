@@ -59,9 +59,9 @@ public class HomeBean implements Serializable {
             sql = returnModel.getStatement();
             transformationTime = returnModel.getOcl2sqlNanoTime();
         } catch (NullPointerException e) {
-            sql = e.getMessage();
+            sql = String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage());
         } catch (Exception e) {
-            sql = "Invalid OCL expression";
+            sql = String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage());
         }
         return null;
     }
