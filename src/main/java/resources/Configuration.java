@@ -16,21 +16,6 @@ public class Configuration {
         return getLocalConnectionForTTC();
 //        return getRemoteConnection();
     }
-    
-    public static Connection getConnectionForSQLSI()
-        throws SQLException, NamingException {
-        return getLocalConnectionForSQLSI();
-//        return getRemoteConnection();
-    }
-
-    @SuppressWarnings("unused")
-    private static Connection getLocalConnectionForSQLSI()
-        throws NamingException, SQLException {
-        Context initContext = new InitialContext();
-        Context envContext = (Context) initContext.lookup("java:comp/env");
-        DataSource ds = (DataSource) envContext.lookup("jdbc/sqlsidb");
-        return ds.getConnection();
-    }
 
     @SuppressWarnings("unused")
     private static Connection getLocalConnectionForTTC()
