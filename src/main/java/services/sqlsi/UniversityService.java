@@ -37,7 +37,10 @@ import org.vgu.sqlsi.sec.SecurityMode;
 
 import models.ResultRow;
 import models.ResultSet;
+import models.sqlsi.EnrollmentModel;
+import models.sqlsi.LecturerModel;
 import models.sqlsi.SQLSIQueryModel;
+import models.sqlsi.StudentModel;
 import resources.Configuration;
 
 public class UniversityService {
@@ -46,7 +49,8 @@ public class UniversityService {
     static SqlSI sqlSI;
 
     public static ResultSet executeQuery(String scenario, String policy,
-        String caller, String role, SQLSIQueryModel sqlsiQueryModel) throws Exception {
+        String caller, String role, SQLSIQueryModel sqlsiQueryModel)
+        throws Exception {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         refreshScenario(scenario);
@@ -60,7 +64,7 @@ public class UniversityService {
 
     private static ResultSet callSecureStoredProcedure(String caller,
         String role) throws SQLException, NamingException {
-        
+
         ResultSet actualResult = new ResultSet();
         List<ResultRow> rows = new ArrayList<ResultRow>();
         CallableStatement statement = con.prepareCall(
@@ -151,6 +155,9 @@ public class UniversityService {
             con.commit();
             break;
 
+        case "custom":
+            break;
+
         default:
             statement = con.prepareCall("{CALL getVGU2()}");
             statement.executeQuery();
@@ -183,6 +190,78 @@ public class UniversityService {
             break;
 
         }
+    }
+
+    public static void insert(StudentModel studentModel)
+        throws SQLException, NamingException {
+        con = Configuration.getConnectionForSQLSI();
+        con.setAutoCommit(false);
+        Statement stmt = con.createStatement();
+        String insertion = String.format(
+            "INSERT INTO Student(Student_id,name,age) VALUES ('%s','%s','%s')",
+            studentModel.getId(), studentModel.getName(),
+            studentModel.getEmail());
+        stmt.executeUpdate(insertion);
+        con.close();
+    }
+
+    public static void insert(LecturerModel lecturerModel)
+        throws SQLException, NamingException {
+        con = Configuration.getConnectionForSQLSI();
+        con.setAutoCommit(false);
+        Statement stmt = con.createStatement();
+        String insertion = String.format(
+            "INSERT INTO Lecturer(Lecturer_id,name,age) VALUES ('%s','%s','%s')",
+            lecturerModel.getId(), lecturerModel.getName(),
+            lecturerModel.getEmail());
+        stmt.executeUpdate(insertion);
+        con.close();
+    }
+
+    public static void insert(EnrollmentModel enrollmentModel)
+        throws SQLException, NamingException {
+        con = Configuration.getConnectionForSQLSI();
+        con.setAutoCommit(false);
+        Statement stmt = con.createStatement();
+        String insertion = String.format(
+            "INSERT INTO Enrollment(students,lecturers) VALUES ('%s','%s')",
+            enrollmentModel.getStudents(), enrollmentModel.getLecturers());
+        stmt.executeUpdate(insertion);
+        con.close();
+    }
+
+    public static void deleteStudent(String id)
+        throws SQLException, NamingException {
+        con = Configuration.getConnectionForSQLSI();
+        con.setAutoCommit(false);
+        Statement stmt = con.createStatement();
+        String deletion = String
+            .format("DELETE FROM Student WHERE Student_id = '%s'", id);
+        stmt.executeUpdate(deletion);
+        con.close();
+    }
+
+    public static void deleteLecturer(String id)
+        throws SQLException, NamingException {
+        con = Configuration.getConnectionForSQLSI();
+        con.setAutoCommit(false);
+        Statement stmt = con.createStatement();
+        String deletion = String
+            .format("DELETE FROM Lecturer WHERE Lecturer_id = '%s'", id);
+        stmt.executeUpdate(deletion);
+        con.close();
+    }
+
+    public static void delete(EnrollmentModel enrollmentModel)
+        throws SQLException, NamingException {
+        con = Configuration.getConnectionForSQLSI();
+        con.setAutoCommit(false);
+        Statement stmt = con.createStatement();
+        String deletion = String.format(
+            "DELETE FROM Enrollment WHERE students = '%s' AND lecturers = '%s'",
+            enrollmentModel.getStudents(), enrollmentModel.getLecturers());
+        stmt.executeUpdate(deletion);
+        con.close();
     }
 
 }

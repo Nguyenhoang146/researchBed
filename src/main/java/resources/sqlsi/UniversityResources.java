@@ -18,16 +18,29 @@ limitations under the License.
 
 package resources.sqlsi;
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import models.ResultSet;
+import models.sqlsi.EnrollmentModel;
+import models.sqlsi.LecturerModel;
 import models.sqlsi.SQLSIQueryModel;
+import models.sqlsi.StudentModel;
+import response.sqlsi.EnrollmentResponse;
+import response.sqlsi.LecturerResponse;
 import response.sqlsi.ResultSetResponse;
+import response.sqlsi.StudentResponse;
 import services.sqlsi.UniversityService;
 
 @Path("/sqlsi/default")
@@ -50,51 +63,81 @@ public class UniversityResources {
         }
     }
 
-//    @Path("/insert/student")
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response insertStudent(StudentModel studentModel) {
-//        return UniversityService.insert(studentModel);
-//    }
-//    
-//    @Path("/insert/lecturer")
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response insertStudent(LecturerModel lecturerModel) {
-//        return UniversityService.insert(lecturerModel);
-//    }
-//    
-//    @Path("/insert/enrollment")
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response insertStudent(EnrollmentModel enrollmentModel) {
-//        return UniversityService.insert(enrollmentModel);
-//    }
-//    
-//    @Path("/delete/student/{id}")
-//    @DELETE
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response deleteStudent(@PathParam("id") Integer id) {
-//        return UniversityService.deleteStudent(id);
-//    }
-//    
-//    @Path("/delete/lecturer/{id}")
-//    @DELETE
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response deleteLecturer(@PathParam("id") Integer id) {
-//        return UniversityService.deleteLecturer(id);
-//    }
-//    
-//    @Path("/delete/enrollment")
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response deleteEnrollment(EnrollmentModel enrollmentModel) {
-//        return UniversityService.delete(enrollmentModel);
-//    }
+    @Path("/insert/student")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public StudentResponse insertStudent(StudentModel studentModel) {
+        try {
+            UniversityService.insert(studentModel);
+            return new StudentResponse(1, studentModel);
+        } catch (SQLException | NamingException e) {
+            return new StudentResponse(0, e.getMessage());
+        }
+    }
+    
+    @Path("/insert/lecturer")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public LecturerResponse insertStudent(LecturerModel lecturerModel) {
+        try {
+            UniversityService.insert(lecturerModel);
+            return new LecturerResponse(1, lecturerModel);
+        } catch (SQLException | NamingException e) {
+            return new LecturerResponse(0, e.getMessage());
+        }
+    }
+    
+    @Path("/insert/enrollment")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public EnrollmentResponse insertStudent(EnrollmentModel enrollmentModel) {
+        try {
+            UniversityService.insert(enrollmentModel);
+            return new EnrollmentResponse(1, enrollmentModel);
+        } catch (SQLException | NamingException e) {
+            return new EnrollmentResponse(0, e.getMessage());
+        }
+    }
+    
+    @Path("/delete/student/{id}")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteStudent(@PathParam("id") String id) {
+        try {
+            UniversityService.deleteStudent(id);
+            return Response.ok().build();
+        } catch (SQLException | NamingException e) {
+            return Response.status(Status.NOT_ACCEPTABLE).build();
+        }
+    }
+    
+    @Path("/delete/lecturer/{id}")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteLecturer(@PathParam("id") String id) {
+        try {
+            UniversityService.deleteLecturer(id);
+            return Response.ok().build();
+        } catch (SQLException | NamingException e) {
+            return Response.status(Status.NOT_ACCEPTABLE).build();
+        }
+    }
+    
+    @Path("/delete/enrollment")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public EnrollmentResponse deleteEnrollment(EnrollmentModel enrollmentModel) {
+        try {
+            UniversityService.delete(enrollmentModel);
+            return new EnrollmentResponse(1, enrollmentModel);
+        } catch (SQLException | NamingException e) {
+            return new EnrollmentResponse(0, e.getMessage());
+        }
+    }
 }
