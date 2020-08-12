@@ -177,7 +177,7 @@ public class TTCServices {
     }
 
     private static ResultSet executeStatement(String inputStatement) {
-        try (Connection db = Configuration.getConnection()) {
+        try (Connection db = Configuration.getConnectionForTTC()) {
             ResultSet actualResult = new ResultSet();
             List<ResultRow> rows = new ArrayList<ResultRow>();
             PreparedStatement st = db.prepareStatement(inputStatement);
@@ -231,7 +231,7 @@ public class TTCServices {
 
     private static void prepareEnvironment(Integer scenario) {
         String callStatement = CallStatements.get(scenario);
-        try (Connection db = Configuration.getConnection()) {
+        try (Connection db = Configuration.getConnectionForTTC()) {
             CallableStatement cs;
             cs = db.prepareCall(callStatement);
             cs.execute();

@@ -20,6 +20,7 @@ limitations under the License.
 package models;
 
 import java.util.List;
+import java.util.Set;
 
 public class ResultSet {
     private List<ResultRow> rows;
@@ -69,6 +70,24 @@ public class ResultSet {
 
     @Override
     public String toString() {
-        return "ResultSet \n[" + rows + "\n]";
+        String output = "";
+        if(rows != null && !rows.isEmpty()) {
+            Set<String> keys = rows.get(0).getCols().keySet();
+            output = output.concat("<table border=\"1\">");
+            output = output.concat("<tr>");
+            for(String h : keys) {
+                output = output.concat("<th>" + h + "</th>");
+            }
+            output = output.concat("</tr>");
+            for (int i = 0; i < rows.size(); i++) {
+                output = output.concat("<tr>");
+                for(String h : keys) {
+                    output = output.concat("<td>" + rows.get(i).getCols().get(h) + "</td>");
+                }
+                output = output.concat("</tr>");
+            }
+            output = output.concat("</table>");
+        }
+        return output;
     }
 }

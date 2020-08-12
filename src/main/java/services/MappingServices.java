@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-import org.vgu.ocl2psql.main.OCL2PSQL_2;
+import org.vgu.ocl2psql.OCL2PSQL;
 import org.vgu.se.sql.parser.SQLParser;
 import org.vgu.ttc2020.model.TTCReturnModel;
 
@@ -63,7 +63,7 @@ public class MappingServices {
     }
 
     private static Response mapOCLModelToSQLModel(InputModel model) {
-        OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+        OCL2PSQL ocl2psql = new OCL2PSQL();
         ocl2psql.setContextualType("self", model.getSelf());
         ocl2psql.setContextualType("caller", model.getCaller());
         ocl2psql.setContextualType("value", model.getValue());
@@ -81,7 +81,8 @@ public class MappingServices {
         } catch (IOException e) {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(),
+                    e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
@@ -89,7 +90,7 @@ public class MappingServices {
 
     private static Response mapOCLStringToSQLModel(InputModel model) {
         try {
-            OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+            OCL2PSQL ocl2psql = new OCL2PSQL();
             ocl2psql.setContextualType("self", model.getSelf());
             ocl2psql.setContextualType("caller", model.getCaller());
             ocl2psql.setContextualType("value", model.getValue());
@@ -109,14 +110,15 @@ public class MappingServices {
             e.printStackTrace();
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(),
+                    e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
     }
 
     private static Response mapOCLModelToSQLString(InputModel model) {
-        OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+        OCL2PSQL ocl2psql = new OCL2PSQL();
         ocl2psql.setContextualType("self", model.getSelf());
         ocl2psql.setContextualType("caller", model.getCaller());
         ocl2psql.setContextualType("value", model.getValue());
@@ -134,7 +136,8 @@ public class MappingServices {
         } catch (IOException e) {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(),
+                    e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }
@@ -142,7 +145,7 @@ public class MappingServices {
 
     private static Response mapOCLStringToSQLString(InputModel model) {
         try {
-            OCL2PSQL_2 ocl2psql = new OCL2PSQL_2();
+            OCL2PSQL ocl2psql = new OCL2PSQL();
             ocl2psql.setContextualType("self", model.getSelf());
             ocl2psql.setContextualType("caller", model.getCaller());
             ocl2psql.setContextualType("value", model.getValue());
@@ -161,7 +164,8 @@ public class MappingServices {
         } catch (Exception e) {
             OutputMappingModel outputModel = new OutputMappingModel(
                 Response.Status.BAD_REQUEST.getStatusCode(), "",
-                String.format("%1$s: %2$s", e.getClass().getCanonicalName(), e.getMessage()));
+                String.format("%1$s: %2$s", e.getClass().getCanonicalName(),
+                    e.getMessage()));
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(outputModel).build();
         }

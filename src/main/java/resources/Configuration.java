@@ -11,14 +11,29 @@ import javax.sql.DataSource;
 
 public class Configuration {
 
-    public static Connection getConnection()
+    public static Connection getConnectionForTTC()
         throws SQLException, NamingException {
-//        return getLocalConnection();
-        return getRemoteConnection();
+        return getLocalConnectionForTTC();
+//        return getRemoteConnection();
+    }
+    
+    public static Connection getConnectionForSQLSI()
+        throws SQLException, NamingException {
+        return getLocalConnectionForSQLSI();
+//        return getRemoteConnection();
     }
 
     @SuppressWarnings("unused")
-    private static Connection getLocalConnection()
+    private static Connection getLocalConnectionForSQLSI()
+        throws NamingException, SQLException {
+        Context initContext = new InitialContext();
+        Context envContext = (Context) initContext.lookup("java:comp/env");
+        DataSource ds = (DataSource) envContext.lookup("jdbc/sqlsidb");
+        return ds.getConnection();
+    }
+
+    @SuppressWarnings("unused")
+    private static Connection getLocalConnectionForTTC()
         throws NamingException, SQLException {
         Context initContext = new InitialContext();
         Context envContext = (Context) initContext.lookup("java:comp/env");
@@ -26,7 +41,6 @@ public class Configuration {
         return ds.getConnection();
     }
 
-    @SuppressWarnings("unused")
     private static Connection getRemoteConnection() {
         if (System.getProperty("RDS_HOSTNAME") != null) {
             try {
@@ -48,4 +62,6 @@ public class Configuration {
         }
         return null;
     }
+    
+    
 }

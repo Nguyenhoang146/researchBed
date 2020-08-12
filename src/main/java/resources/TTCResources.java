@@ -57,7 +57,7 @@ public class TTCResources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response test() {
-        try (Connection db = Configuration.getConnection()) {
+        try (Connection db = Configuration.getConnectionForTTC()) {
             ResultSet actualResult = new ResultSet();
             List<ResultRow> rows = new ArrayList<ResultRow>();
             String callStm = "SELECT * FROM TestTable";
