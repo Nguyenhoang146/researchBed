@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>Ocl2PSql</title>
+	<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+<h:body>
+	<h1 align="center">SQLSI: SQL Security Injector</h1>
+	<hr />
+This web service is intended for readers of our manuscripts:
+<ul>
+		<li><b>Model-based characterization of fine-grained access
+				control authorization for SQL queries</b></li>
+		<li><b>A model-driven approach for enforcing fine-grained
+				access control authorization for SQL queries</b></li>
+	</ul>
+
+For the purpose of demonstration, we fix the following information:
+
+<p:accordionPanel activeIndex="null">
+		<p:tab title="1. The data model">
+			<ul>
+				<li><b>Lecturer</b> (<i>Lecturer_id</i>, email) where <i>Lecturer_id</i>
+					is the primary key.</li>
+				<li><b>Student</b> (<i>Student_id</i>, email) where <i>Student_id</i>
+					is the primary key.</li>
+				<li><b>Enrollment</b> (<i>students</i>, <i>lecturers</i>) where
+					<i>students</i> is the foreign key refer to <i>Student_id</i> and <i>lecturers</i>
+					is the foreign key refer to <i>Lecturer_id</i>.</li>
+			</ul>
+		</p:tab>
+		<p:tab title="2. The security model">
+			<ul>
+				<li>There is only one role, namely, the role Lecturer.
+					Lecturers are assigned this role.</li>
+				<li>Any lecturer can know its students as well as the email of
+					the students.</li>
+				<li>Any lecturer can know his/her own email.</li>
+				<li>Any lecturer can know its colleagues. Two lecturers are
+					colleagues if there is at least one student enrolled with both of
+					them.</li>
+				<li>Any lecturer can know its colleagues’ emails.</li>
+			</ul>
+		</p:tab>
+		<p:tab title="3. The object model">
+			<div class="ui-g">
+				<table border="1" class="ui-g-4">
+					<caption>
+						<b>Lecturer</b>
+					</caption>
+					<tr>
+						<th>Lecturer_id</th>
+						<th>Email</th>
+					</tr>
+					<tr>
+						<td>Manuel</td>
+						<td>Manuel@vgu.edu.vn</td>
+					</tr>
+					<tr>
+						<td>Huong</td>
+						<td>Huong@vgu.edu.vn</td>
+					</tr>
+					<tr>
+						<td>Hieu</td>
+						<td>Hieu@vgu.edu.vn</td>
+					</tr>
+				</table>
+
+				<table border="1" class="ui-g-4">
+					<caption>Student</caption>
+					<tr>
+						<th>Student_id</th>
+						<th>Email</th>
+					</tr>
+					<tr>
+						<td>An</td>
+						<td>An@vgu.edu.vn</td>
+					</tr>
+					<tr>
+						<td>Chau</td>
+						<td>Chau@vgu.edu.vn</td>
+					</tr>
+					<tr>
+						<td>Hoang</td>
+						<td>Hoang@vgu.edu.vn</td>
+					</tr>
+					<tr>
+						<td>Nam</td>
+						<td>Nam@vgu.edu.vn</td>
+					</tr>
+					<tr>
+						<td>Thanh</td>
+						<td>Thanh@vgu.edu.vn</td>
+					</tr>
+				</table>
+
+				<table border="1" class="ui-g-4">
+					<caption>Enrollment</caption>
+					<tr>
+						<th>lecturers</th>
+						<th>students</th>
+					</tr>
+					<tr>
+						<td>Manuel</td>
+						<td>An</td>
+					</tr>
+					<tr>
+						<td>Manuel</td>
+						<td>Hoang</td>
+					</tr>
+					<tr>
+						<td>Manuel</td>
+						<td>Chau</td>
+					</tr>
+					<tr>
+						<td>Huong</td>
+						<td>Chau</td>
+					</tr>
+					<tr>
+						<td>Huong</td>
+						<td>Thanh</td>
+					</tr>
+					<tr>
+						<td>Hieu</td>
+						<td>Thanh</td>
+					</tr>
+					<tr>
+						<td>Hieu</td>
+						<td>Nam</td>
+					</tr>
+				</table>
+			</div>
+		</p:tab>
+	</p:accordionPanel>
+
+	<h:form id="mainForm">
+		<div class="ui-g-12">
+			<p:outputPanel styleClass="ui-g-2">SQL-select statement:</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-8">
+				<h:inputTextarea id="ocl"
+					style="font-family: Courier,sans-serif; font-size: 14px; min-height: 62px;"
+					styleClass="ui-g-12" rows="8" value="#{sqlsiBean.sqlStm}" />
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-2" />
+		</div>
+		<div class="ui-g-12">
+			<p:outputPanel styleClass="ui-g-2" />
+			<p:outputPanel styleClass="ui-g-1">Caller: </p:outputPanel>
+			<p:selectOneButton value="#{sqlsiBean.caller}" styleClass="ui-g-4">
+				<f:selectItem itemLabel="Manuel" itemValue="Manuel" />
+				<f:selectItem itemLabel="Huong" itemValue="Huong" />
+				<f:selectItem itemLabel="Hieu" itemValue="Hieu" />
+				<f:selectItem itemLabel="Others" itemValue="Trang" />
+			</p:selectOneButton>
+			<div class="ui-g-3">
+				<h:commandButton styleClass="ui-g-12" value="Execute with SQLSI"
+					action="#{sqlsiBean.map}">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+			</div>
+			<p:outputPanel styleClass="ui-g-2" />
+		</div>
+		<div class="ui-g-12">
+			<p:outputPanel styleClass="ui-g-2">Output</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-8">
+				<h:outputText id="sql" escape="false"
+					style="font-family: Courier,sans-serif; border-color: transparent; box-shadow: none; font-size: 14px; min-height: 40px;"
+					styleClass="ui-g-12" readonly="true" value="#{sqlsiBean.sql}" />
+			</p:outputPanel>
+			<p:outputPanel styleClass="ui-g-2" />
+		</div>
+	</h:form>
+</h:body>
+</html>
