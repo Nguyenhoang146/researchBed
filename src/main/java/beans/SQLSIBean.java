@@ -114,7 +114,7 @@ public class SQLSIBean {
         String callStatement = String.format("{CALL SecQuery('%s','Lecturer')}",
             caller);
         ResultSet rs = executeStatement(callStatement);
-        sql = rs.toString();
+        sql = rs.toHTMLString();
         return null;
     }
 

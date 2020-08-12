@@ -16,7 +16,7 @@ limitations under the License.
 @author: ngpbh
 ***************************************************************************/
 
-package resources;
+package resources.ocl2psql;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;

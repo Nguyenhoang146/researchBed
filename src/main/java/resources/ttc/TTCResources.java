@@ -16,7 +16,7 @@ limitations under the License.
 @author: ngpbh
 ***************************************************************************/
 
-package resources;
+package resources.ttc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,6 +39,7 @@ import javax.ws.rs.core.Response;
 import models.InputMappingDefaultModel;
 import models.ResultRow;
 import models.ResultSet;
+import resources.Configuration;
 import services.TTCServices;
 
 @Path("/ttc")

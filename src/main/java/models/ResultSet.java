@@ -68,8 +68,7 @@ public class ResultSet {
         return true;
     }
 
-    @Override
-    public String toString() {
+    public String toHTMLString() {
         String output = "";
         if(rows != null && !rows.isEmpty()) {
             Set<String> keys = rows.get(0).getCols().keySet();

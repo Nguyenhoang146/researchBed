@@ -25,6 +25,10 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import resources.ocl2psql.MappingResources;
+import resources.sqlsi.UniversityResources;
+import resources.ttc.TTCResources;
+
 @ApplicationPath("/rest")
 public class MappingApplication extends Application {
     @Override
@@ -32,6 +36,7 @@ public class MappingApplication extends Application {
         Set<Class<?>> resources = new HashSet<Class<?>>();
         resources.add(MappingResources.class);
         resources.add(TTCResources.class);
+        resources.add(UniversityResources.class);
         return resources;
     }
 }
