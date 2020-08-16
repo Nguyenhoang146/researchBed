@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ResultSet {
+    private List<String> headers;
     private List<ResultRow> rows;
 
     public List<ResultRow> getRows() {
@@ -88,5 +89,13 @@ public class ResultSet {
             output = output.concat("</table>");
         }
         return output;
+    }
+
+    public List<String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(List<String> headers) {
+        this.headers = headers;
     }
 }

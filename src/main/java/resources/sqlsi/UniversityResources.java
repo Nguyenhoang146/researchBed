@@ -19,10 +19,12 @@ limitations under the License.
 package resources.sqlsi;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -33,33 +35,57 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import models.ResultSet;
+import models.sqlsi.EnrollmentListModel;
 import models.sqlsi.EnrollmentModel;
+import models.sqlsi.LecturerListModel;
 import models.sqlsi.LecturerModel;
+import models.sqlsi.ObjectModel;
 import models.sqlsi.SQLSIQueryModel;
+import models.sqlsi.StudentListModel;
 import models.sqlsi.StudentModel;
-import response.sqlsi.EnrollmentResponse;
-import response.sqlsi.LecturerResponse;
-import response.sqlsi.ResultSetResponse;
-import response.sqlsi.StudentResponse;
 import services.sqlsi.UniversityService;
 
 @Path("/sqlsi/default")
 public class UniversityResources {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllData() {
+        try {
+            ObjectModel om = UniversityService.getAllData();
+            return Response.status(Status.ACCEPTED).entity(om).build();
+        } catch (Exception e) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+    }
+    
+    @Path("/reset")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReset() {
+        try {
+            ObjectModel om = UniversityService.resetScenario();
+            return Response.status(Status.ACCEPTED).entity(om).build();
+        } catch (Exception e) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+    }
+
+
     @Path("/execute")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultSetResponse executeQuery(
-        @QueryParam("scenario") String scenario,
+    public Response executeQuery(@QueryParam("scenario") String scenario,
         @QueryParam("policy") String policy,
         @QueryParam("caller") String caller, @QueryParam("role") String role,
         SQLSIQueryModel sqlsiQueryModel) {
         try {
             ResultSet resultSet = UniversityService.executeQuery(scenario,
                 policy, caller, role, sqlsiQueryModel);
-            return new ResultSetResponse(1, resultSet);
+            return Response.status(Status.ACCEPTED).entity(resultSet).build();
         } catch (Exception e) {
-            return new ResultSetResponse(0, e.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
@@ -67,77 +93,80 @@ public class UniversityResources {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public StudentResponse insertStudent(StudentModel studentModel) {
+    public Response insertStudent(StudentModel studentModel) {
         try {
             UniversityService.insert(studentModel);
-            return new StudentResponse(1, studentModel);
+            return Response.status(Status.ACCEPTED).entity(studentModel).build();
         } catch (SQLException | NamingException e) {
-            return new StudentResponse(0, e.getMessage());
+            return Response.status(Status.BAD_REQUEST).build();
         }
     }
-    
+
     @Path("/insert/lecturer")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public LecturerResponse insertStudent(LecturerModel lecturerModel) {
+    public Response insertStudent(LecturerModel lecturerModel) {
         try {
             UniversityService.insert(lecturerModel);
-            return new LecturerResponse(1, lecturerModel);
+            return Response.status(Status.ACCEPTED).entity(lecturerModel).build();
         } catch (SQLException | NamingException e) {
-            return new LecturerResponse(0, e.getMessage());
+            return Response.status(Status.BAD_REQUEST).build();
         }
     }
-    
+
     @Path("/insert/enrollment")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public EnrollmentResponse insertStudent(EnrollmentModel enrollmentModel) {
+    public Response insertStudent(EnrollmentModel enrollmentModel) {
         try {
             UniversityService.insert(enrollmentModel);
-            return new EnrollmentResponse(1, enrollmentModel);
+            return Response.status(Status.ACCEPTED).entity(enrollmentModel).build();
         } catch (SQLException | NamingException e) {
-            return new EnrollmentResponse(0, e.getMessage());
+            return Response.status(Status.BAD_REQUEST).build();
         }
     }
-    
+
     @Path("/delete/student/{id}")
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteStudent(@PathParam("id") String id) {
         try {
-            UniversityService.deleteStudent(id);
-            return Response.ok().build();
+            List<StudentModel> students = UniversityService.deleteStudent(id);
+            return Response.status(Status.ACCEPTED)
+                .entity(new StudentListModel(students)).build();
         } catch (SQLException | NamingException e) {
             return Response.status(Status.NOT_ACCEPTABLE).build();
         }
     }
-    
+
     @Path("/delete/lecturer/{id}")
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteLecturer(@PathParam("id") String id) {
         try {
-            UniversityService.deleteLecturer(id);
-            return Response.ok().build();
+            List<LecturerModel> lecturers = UniversityService.deleteLecturer(id);
+            return Response.status(Status.ACCEPTED)
+                .entity(new LecturerListModel(lecturers)).build();
         } catch (SQLException | NamingException e) {
             return Response.status(Status.NOT_ACCEPTABLE).build();
         }
     }
-    
+
     @Path("/delete/enrollment")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public EnrollmentResponse deleteEnrollment(EnrollmentModel enrollmentModel) {
+    public Response deleteEnrollment(
+        EnrollmentModel enrollmentModel) {
         try {
-            UniversityService.delete(enrollmentModel);
-            return new EnrollmentResponse(1, enrollmentModel);
+            List<EnrollmentModel> enrollments = UniversityService.delete(enrollmentModel);
+            return Response.status(Status.ACCEPTED)
+                .entity(new EnrollmentListModel(enrollments)).build();
         } catch (SQLException | NamingException e) {
-            return new EnrollmentResponse(0, e.getMessage());
+            return Response.status(Status.NOT_ACCEPTABLE).build();
         }
     }
 }

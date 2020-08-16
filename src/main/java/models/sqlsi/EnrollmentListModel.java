@@ -18,32 +18,33 @@ limitations under the License.
 
 package models.sqlsi;
 
-public class StudentModel {
-    private String id;
-    private String name;
-    private String email;
+import java.io.Serializable;
+import java.util.List;
 
-    public String getId() {
-        return id;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class EnrollmentListModel implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private List<EnrollmentModel> enrollments;
+
+    public List<EnrollmentModel> getEnrollments() {
+        return enrollments;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEnrollments(List<EnrollmentModel> enrollments) {
+        this.enrollments = enrollments;
     }
 
-    public String getName() {
-        return name;
+    public EnrollmentListModel() {
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @JsonCreator
+    public EnrollmentListModel(
+        @JsonProperty List<EnrollmentModel> enrollments) {
+        this.enrollments = enrollments;
     }
 }

@@ -13,14 +13,14 @@ public class Configuration {
 
     public static Connection getConnectionForTTC()
         throws SQLException, NamingException {
-        return getLocalConnectionForTTC();
-//        return getRemoteConnection();
+//        return getLocalConnectionForTTC();
+        return getRemoteConnection();
     }
     
     public static Connection getConnectionForSQLSI()
         throws SQLException, NamingException {
-        return getLocalConnectionForSQLSI();
-//        return getRemoteConnection();
+//        return getLocalConnectionForSQLSI();
+        return getRemoteConnection();
     }
 
     @SuppressWarnings("unused")
