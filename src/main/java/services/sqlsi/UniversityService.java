@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,25 +53,24 @@ public class UniversityService {
     public static ResultSet executeQuery(String scenario, String policy,
         String caller, String role, SQLSIQueryModel sqlsiQueryModel)
         throws Exception {
-        con = Configuration.getConnectionForSQLSI();
-        con.setAutoCommit(false);
-        refreshScenario(scenario);
+        try {
+            con = Configuration.getConnectionForSQLSI();
+            con.setAutoCommit(false);
+            refreshScenario(scenario);
 //        refreshPolicy(policy);
-        initSQLSI();
-        createSecureStoredProcedure(sqlsiQueryModel);
-        ResultSet resultSet = callSecureStoredProcedure(caller, role);
-        con.close();
-        return resultSet;
-    }
-
-    private static ResultSet callSecureStoredProcedure(String caller,
-        String role) throws SQLException, NamingException {
-
-        CallableStatement statement = con.prepareCall(
-            String.format("{CALL SecQuery('%s','%s')}", caller, role));
-        java.sql.ResultSet rs = statement.executeQuery();
-        con.commit();
-        return convertResultSet(rs);
+            initSQLSI();
+            createSecureStoredProcedure(sqlsiQueryModel);
+            CallableStatement statement = con.prepareCall(
+                String.format("{CALL SecQuery('%s','%s')}", caller, role));
+            ResultSet resultSet = convertResultSet(statement.executeQuery());
+            con.commit();
+            con.close();
+            return resultSet;
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     private static ResultSet convertResultSet(java.sql.ResultSet rs)
@@ -122,20 +122,28 @@ public class UniversityService {
 
     private static void createSecureStoredProcedure(
         SQLSIQueryModel sqlsiQueryModel) throws Exception {
-        String secureStoredProcedure = sqlSI
-            .getSecQuery(sqlsiQueryModel.getQuery());
-        Statement stmt = con.createStatement();
-        String drop = "DROP PROCEDURE IF EXISTS SecQuery;";
-        secureStoredProcedure = secureStoredProcedure.replace(drop, "");
-        String delimiterIn = "DELIMITER //";
-        String delimiterOut = "DELIMITER ;";
-        secureStoredProcedure = secureStoredProcedure.replace(delimiterIn, "");
-        secureStoredProcedure = secureStoredProcedure.replace(delimiterOut, "");
-        secureStoredProcedure = secureStoredProcedure.replace("//", ";");
-        stmt.execute(drop);
-        con.commit();
-        stmt.execute(secureStoredProcedure);
-        con.commit();
+        try {
+            String secureStoredProcedure = sqlSI
+                .getSecQuery(sqlsiQueryModel.getQuery());
+            Statement stmt = con.createStatement();
+            String drop = "DROP PROCEDURE IF EXISTS SecQuery;";
+            secureStoredProcedure = secureStoredProcedure.replace(drop, "");
+            String delimiterIn = "DELIMITER //";
+            String delimiterOut = "DELIMITER ;";
+            secureStoredProcedure = secureStoredProcedure.replace(delimiterIn,
+                "");
+            secureStoredProcedure = secureStoredProcedure.replace(delimiterOut,
+                "");
+            secureStoredProcedure = secureStoredProcedure.replace("//", ";");
+            stmt.execute(drop);
+            con.commit();
+            stmt.execute(secureStoredProcedure);
+            con.commit();
+        } catch (Exception e) {
+            con.commit();
+            throw e;
+        }
+
     }
 
     private static void initSQLSI()
@@ -152,18 +160,29 @@ public class UniversityService {
         CallableStatement statement;
         switch (scenario) {
         case "VGU1":
-            statement = con.prepareCall("{CALL getVGU1()}");
-            statement.executeQuery();
-            con.commit();
+            try {
+                statement = con.prepareCall("{CALL getVGU1()}");
+                statement.executeQuery();
+                con.commit();
+            } catch (Exception e) {
+                con.commit();
+                throw e;
+            }
             break;
 
         case "custom":
             break;
 
         default:
-            statement = con.prepareCall("{CALL getVGU2()}");
-            statement.executeQuery();
-            con.commit();
+            try {
+                statement = con.prepareCall("{CALL getVGU2()}");
+                statement.executeQuery();
+                con.commit();
+            } catch (Exception e) {
+                con.commit();
+                throw e;
+            }
+
             break;
 
         }
@@ -174,21 +193,37 @@ public class UniversityService {
         CallableStatement statement;
         switch (policy) {
         case "SecVGU#A":
-            statement = con.prepareCall("{CALL getSecA()}");
-            statement.executeQuery();
-            con.commit();
+            try {
+                statement = con.prepareCall("{CALL getSecA()}");
+                statement.executeQuery();
+                con.commit();
+            } catch (Exception e) {
+                con.commit();
+                throw e;
+            }
+            
             break;
 
         case "SecVGU#B":
+            try {
             statement = con.prepareCall("{CALL getSecB()}");
             statement.executeQuery();
             con.commit();
+            } catch (Exception e) {
+                con.commit();
+                throw e;
+            }
             break;
 
         default:
+            try {
             statement = con.prepareCall("{CALL getSecC()}");
             statement.executeQuery();
             con.commit();
+            } catch (Exception e) {
+                con.commit();
+                throw e;
+            }
             break;
 
         }
@@ -196,6 +231,7 @@ public class UniversityService {
 
     public static void insert(StudentModel studentModel)
         throws SQLException, NamingException {
+        try {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         Statement stmt = con.createStatement();
@@ -206,10 +242,16 @@ public class UniversityService {
         stmt.executeUpdate(insertion);
         con.commit();
         con.close();
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     public static void insert(LecturerModel lecturerModel)
         throws SQLException, NamingException {
+        try {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         Statement stmt = con.createStatement();
@@ -220,10 +262,16 @@ public class UniversityService {
         stmt.executeUpdate(insertion);
         con.commit();
         con.close();
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     public static void insert(EnrollmentModel enrollmentModel)
         throws SQLException, NamingException {
+        try {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         Statement stmt = con.createStatement();
@@ -233,26 +281,38 @@ public class UniversityService {
         stmt.executeUpdate(insertion);
         con.commit();
         con.close();
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     public static List<StudentModel> deleteStudent(String id)
         throws SQLException, NamingException {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
-        Statement stmt = con.createStatement();
-        String deletion = String
-            .format("DELETE FROM Student WHERE Student_id = '%s'", id);
-        stmt.executeUpdate(deletion);
-        con.commit();
-        stmt.clearBatch();
-        List<StudentModel> students = getStudents(stmt);
-        con.commit();
-        con.close();
-        return students;
+        try {
+            PreparedStatement stmt = con
+                .prepareStatement("DELETE FROM Student WHERE Student_id = ?");
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+            con.commit();
+            stmt.clearBatch();
+            List<StudentModel> students = getStudents(stmt);
+            con.commit();
+            con.close();
+            return students;
+        } catch (SQLException e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     public static List<LecturerModel> deleteLecturer(String id)
         throws SQLException, NamingException {
+        try {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         Statement stmt = con.createStatement();
@@ -265,10 +325,16 @@ public class UniversityService {
         con.commit();
         con.close();
         return lecturers;
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     public static List<EnrollmentModel> delete(EnrollmentModel enrollmentModel)
         throws SQLException, NamingException {
+        try {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         Statement stmt = con.createStatement();
@@ -282,10 +348,16 @@ public class UniversityService {
         con.commit();
         con.close();
         return enrollments;
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     public static ObjectModel getAllData()
         throws SQLException, NamingException {
+        try {
         con = Configuration.getConnectionForSQLSI();
         con.setAutoCommit(false);
         ObjectModel om = new ObjectModel();
@@ -296,6 +368,11 @@ public class UniversityService {
         con.commit();
         con.close();
         return om;
+        } catch (Exception e) {
+            con.commit();
+            con.close();
+            throw e;
+        }
     }
 
     private static List<EnrollmentModel> getEnrollments(Statement stmt)

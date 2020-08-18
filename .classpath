@@ -94,7 +94,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/resources/sqlsi.jar" sourcepath="/sqlsi">
+	<classpathentry kind="lib" path="src/main/resources/sqlsi.jar" sourcepath="/SQLSI">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
